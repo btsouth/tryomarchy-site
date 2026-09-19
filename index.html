@@ -326,7 +326,7 @@
     <header>
       <p class="wordmark">try omarchy<span class="cursor" aria-hidden="true"></span></p>
       <h1>Try Omarchy without installing it.</h1>
-      <p class="lede">The full Omarchy Linux desktop, running in a window on your Windows PC. No partitions touched, no dual boot, nothing to undo later. When you're done, you delete one folder.</p>
+      <p class="lede">The full Omarchy Linux desktop, running in a window on your Windows PC. No repartitioning or dual boot. Your Linux files stay between sessions, and Windows keeps working alongside it.</p>
       <div class="actions">
         <a class="btn btn-primary" href="/download">Download for Windows</a>
         <a class="btn btn-ghost" href="https://github.com/omacom/try-omarchy-windows">GitHub</a>
@@ -347,22 +347,28 @@
       <h2 class="label">why try it here</h2>
       <div class="points">
         <div>
-          <h3>Nothing to undo</h3>
-          <p>No new partitions, no bootloader, no Windows settings changed. The whole Linux system lives in a single file, and deleting that file is the entire uninstall process.</p>
+          <h3>Keep your Windows setup</h3>
+          <p>No new partitions or bootloader. Setup can enable Windows Hypervisor Platform and ask for a restart. Use the built-in uninstall option when you are finished.</p>
         </div>
         <div>
           <h3>It's the real thing</h3>
           <p>This is the real Omarchy desktop, running on your machine. Every theme, every screensaver, the whole experience. Not a slideshow of someone else's screen.</p>
         </div>
         <div>
-          <h3>It's fast</h3>
-          <p>It draws with your actual graphics card, so the desktop feels quick and video plays smoothly. It boots straight to the desktop in seconds.</p>
+          <h3>Use your graphics card</h3>
+          <p>GPU acceleration makes the desktop and video responsive on compatible drivers. A CPU rendering option is available when a graphics driver needs a fallback.</p>
         </div>
         <div>
           <h3>It behaves like an app</h3>
-          <p>It runs in a normal window, not a VM console. The Windows key drives Omarchy while the window is focused and Windows everywhere else, copy and paste crosses both ways, and every launch after the first goes straight to the desktop.</p>
+          <p>It runs in a normal window, not a VM console. The Windows key drives Omarchy while the window is focused and Windows everywhere else. Copy text, images and files between desktops, or drop files into Omarchy without a transfer window taking over.</p>
         </div>
       </div>
+    </section>
+
+    <section>
+      <h2 class="label">in the latest preview</h2>
+      <p class="muted">Use your Windows camera and microphone in Linux apps, drag files into an open folder or Downloads, and keep working while larger transfers run. Audio playback, shared folders and clipboard integration connect the two desktops.</p>
+      <p class="muted">Back up your installation, take a snapshot before making changes, grow its disk or move it to another drive. Signed launcher updates and recovery tools help keep your files safe. <a href="https://github.com/omacom/try-omarchy-windows/releases/latest">Read the release notes</a> for current features and limits.</p>
     </section>
 
     <section>
@@ -389,7 +395,7 @@
       </details>
       <details>
         <summary>Will it mess up my PC?</summary>
-        <p>No. Setup switches on one built-in Windows feature (the same virtualization WSL2 uses) and that's it. It doesn't touch your files, partitions, or boot setup — everything it adds lives in one folder you can delete.</p>
+        <p>It does not repartition your drive or replace your bootloader. Setup may enable Windows Hypervisor Platform, request a restart and add app shortcuts. Linux data lives in the installation folder. Use Settings to back up your files or uninstall the app; shared folders remain your Windows files.</p>
       </details>
       <details>
         <summary>Which versions of Windows work?</summary>
@@ -397,11 +403,11 @@
       </details>
       <details>
         <summary>What kind of PC do I need?</summary>
-        <p>If your PC can run WSL2, it can run this. On our mid-range Ryzen 5 test laptop, the desktop is up about six seconds after launch.</p>
+        <p>You need an x86_64 processor with hardware virtualization enabled, enough free space for the downloaded image and a growing Linux disk, and memory available for both Windows and Omarchy. Graphics performance depends on your GPU and driver. Check the compatibility guide before downloading.</p>
       </details>
       <details>
         <summary>Can I install Linux apps?</summary>
-        <p>Yes. This is a full Arch Linux environment, so <code>pacman</code>, <code>paru</code>, VS Code, and other graphical Linux apps work normally. See the <a href="https://github.com/omacom/try-omarchy-windows/blob/master/docs/COMPATIBILITY.md">compatibility guide</a> for current VM limits.</p>
+        <p>Yes. This is a full Arch Linux environment, so <code>pacman</code>, <code>yay</code>, VS Code, and other graphical Linux apps work normally. See the <a href="https://github.com/omacom/try-omarchy-windows/blob/master/docs/COMPATIBILITY.md">compatibility guide</a> for current VM limits.</p>
       </details>
       <details>
         <summary>How do I actually install Omarchy?</summary>
