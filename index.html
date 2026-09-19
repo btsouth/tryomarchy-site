@@ -373,7 +373,7 @@
 
     <section id="try">
       <h2 class="label">try it today</h2>
-      <p class="muted"><a href="/download">Download TryOmarchy.exe</a> (8 MB) and open it. The first run sets everything up by itself: Windows asks permission to switch on the virtualization it already includes and restarts once, then the app pulls the graphics engine and the Omarchy image, about 1.5 GB in all. Everything it needs comes with it, QEMU included - there's nothing else to install. After that, every launch goes straight to the desktop. No commands, no sign-in screens, no console text.</p>
+      <p class="muted"><a href="/download">Download the TryOmarchy.exe launcher</a> and open it. The first run sets everything up by itself: Windows asks permission to switch on the virtualization it already includes and restarts once, then the app pulls the graphics runtime and a multi-gigabyte Omarchy image. Everything it needs comes with it, QEMU included - there's nothing else to install. After that, every launch goes straight to the desktop. No commands, no sign-in screens, no console text.</p>
       <figure class="shot">
         <img src="/assets/first-run.png" alt="The Omarchy setup screen running inside the Try Omarchy window on Windows" loading="lazy">
         <button class="vbtn vbtn-zoom" aria-label="Bigger view">&#10530;</button>
@@ -385,7 +385,7 @@
       <h2 class="label">questions</h2>
       <details>
         <summary>Is this official?</summary>
-        <p>No. It's an unofficial project, not affiliated with Omarchy, Basecamp, DHH, or 37signals. Omarchy is their work. If you want the real project, that's <a href="https://omarchy.org">omarchy.org</a>.</p>
+        <p>Try Omarchy for Windows is maintained in the <a href="https://github.com/omacom/try-omarchy-windows">Omarchy GitHub organization</a>. It is currently a preview, with a stable v1 still in progress. See the project on GitHub for the latest release and known limitations. Learn about Omarchy at <a href="https://omarchy.org">omarchy.org</a>.</p>
       </details>
       <details>
         <summary>Will it mess up my PC?</summary>
@@ -393,7 +393,7 @@
       </details>
       <details>
         <summary>Which versions of Windows work?</summary>
-        <p>Windows 10 and Windows 11, Home or Pro. Try Omarchy uses the same Windows feature WSL2 runs on, so there's nothing else to install.</p>
+        <p>Try Omarchy targets 64-bit Windows 10 and 11, Home or Pro, with hardware virtualization enabled. Physical testing currently centers on an AMD Windows 11 laptop. See the <a href="https://github.com/omacom/try-omarchy-windows/blob/master/docs/COMPATIBILITY.md">compatibility guide</a> for tested configurations and remaining limitations.</p>
       </details>
       <details>
         <summary>What kind of PC do I need?</summary>
@@ -410,7 +410,7 @@
     </section>
 
     <footer>
-      <p>Try Omarchy for Windows is an unofficial project and is not affiliated with or endorsed by Omarchy, Basecamp, DHH, or 37signals.</p>
+      <p>Try Omarchy for Windows is an open-source preview. Follow development in the <a href="https://github.com/omacom/try-omarchy-windows">Omarchy GitHub organization</a>.</p>
       <p class="credits">
         Built on the work of <a href="https://github.com/basecamp/omarchy">Omarchy</a> by DHH / Basecamp,
         <a href="https://github.com/themartiano/try-omarchy">try-omarchy</a> by Eduardo,
