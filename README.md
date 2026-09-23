@@ -1,7 +1,7 @@
 # tryomarchy.com
 
 Landing page for [Try Omarchy for Windows](https://github.com/omacom/try-omarchy-windows).
-Static HTML, no build step, no JS, no trackers.
+Static HTML with a small script for media controls. No build step or trackers.
 
 ## Deployed
 
@@ -9,12 +9,12 @@ Live at https://tryomarchy.com (also on www). Cloudflare Pages project
 `tryomarchy`, git-connected to this repo on `main` — every push to main
 deploys automatically. Custom domains and certs are active.
 
-## Assets still to add
+## Assets
 
-- Real capture in the hero frame (see the HTML comment at the media slot):
-  15-30s loop of theme switch / Super+Space menu / screensaver, captured with
-  Windows tooling (Win+Shift+S or Xbox Game Bar; QMP screendump does not work on the GL path)
-- Swap `og.png` for a version with a real screenshot when one exists
+The hero video and poster, first-run image, and social card use real Windows
+captures. The favicon uses the same official Omarchy mark as the Windows app
+icon. Refresh captures when the released launcher or guest changes visibly;
+do not substitute a mockup for a product screenshot.
 
 ## Regenerating og.png
 
