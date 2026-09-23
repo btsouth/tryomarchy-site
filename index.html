@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Try Omarchy for Windows</title>
-  <meta name="description" content="The full Omarchy Linux desktop, running in a window on your Windows PC. No partitions, no bootloader, no dual boot. Uninstalling is deleting one folder.">
+  <meta name="description" content="Try the full Omarchy Linux desktop in a window on Windows. No repartitioning or dual boot. Your Linux files persist between sessions.">
 
   <meta property="og:site_name" content="Try Omarchy for Windows">
   <meta property="og:title" content="Try Omarchy for Windows">
-  <meta property="og:description" content="The full Omarchy Linux desktop, running in a window on your Windows PC. No partitions, no bootloader, no dual boot. Uninstalling is deleting one folder.">
+  <meta property="og:description" content="Try the full Omarchy Linux desktop in a window on Windows. No repartitioning or dual boot. Your Linux files persist between sessions.">
   <meta property="og:image" content="https://tryomarchy.com/og.png">
   <meta property="og:image:alt" content="Try Omarchy for Windows">
   <meta property="og:url" content="https://tryomarchy.com">
@@ -17,7 +17,7 @@
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Try Omarchy for Windows">
-  <meta name="twitter:description" content="The full Omarchy Linux desktop, running in a window on your Windows PC. No partitions, no bootloader, no dual boot. Uninstalling is deleting one folder.">
+  <meta name="twitter:description" content="Try the full Omarchy Linux desktop in a window on Windows. No repartitioning or dual boot. Your Linux files persist between sessions.">
   <meta name="twitter:image" content="https://tryomarchy.com/og.png">
 
   <meta name="theme-color" content="#0e1116">
@@ -48,7 +48,7 @@
       --border: #262d37;
       --text: #e8eaed;
       --muted: #9aa4af;
-      --green: #3fb950;
+      --green: #9ece6a;
       --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       --mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
     }
@@ -70,7 +70,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    ::selection { background: rgba(63, 185, 80, 0.35); }
+    ::selection { background: rgba(158, 206, 106, 0.35); }
 
     .wrap {
       max-width: 42rem;
@@ -96,6 +96,8 @@
       align-items: center;
       gap: 0.4em;
     }
+
+    .brand-mark { width: 2rem; height: 2rem; }
 
     .cursor {
       display: inline-block;
@@ -139,7 +141,7 @@
       transition: background 0.15s ease, border-color 0.15s ease;
     }
     .btn-primary { background: var(--green); color: #0b120d; }
-    .btn-primary:hover { background: #4cc95e; }
+    .btn-primary:hover { background: #b5dd8b; }
     .btn-ghost { border: 1px solid var(--border); color: var(--text); }
     .btn-ghost:hover { border-color: var(--muted); }
 
@@ -149,6 +151,8 @@
       color: var(--muted);
       margin-top: 1.5rem;
     }
+
+    .release-line { font-size: 0.875rem; color: var(--muted); margin-top: 0.8rem; }
 
     /* media */
 
@@ -324,13 +328,14 @@
   <div class="wrap">
 
     <header>
-      <p class="wordmark">try omarchy<span class="cursor" aria-hidden="true"></span></p>
-      <h1>Try Omarchy without installing it.</h1>
+      <p class="wordmark"><img class="brand-mark" src="/favicon.svg" alt="">try omarchy<span class="cursor" aria-hidden="true"></span></p>
+      <h1>The Omarchy desktop, alongside Windows.</h1>
       <p class="lede">The full Omarchy Linux desktop, running in a window on your Windows PC. No repartitioning or dual boot. Your Linux files stay between sessions, and Windows keeps working alongside it.</p>
       <div class="actions">
         <a class="btn btn-primary" href="/download">Download for Windows</a>
         <a class="btn btn-ghost" href="https://github.com/omacom/try-omarchy-windows">GitHub</a>
       </div>
+      <p class="release-line">Current public download: <a href="https://github.com/omacom/try-omarchy-windows/releases/tag/v0.0.20-preview">v0.0.20-preview</a>. A normal 0.x release is in preparation.</p>
       <p class="meta-line">windows 10 &amp; 11 home &amp; pro &middot; free &middot; open source &middot; no partitions, no dual boot &middot; on a mac? <a href="https://github.com/themartiano/try-omarchy">try-omarchy</a></p>
     </header>
 
@@ -391,7 +396,7 @@
       <h2 class="label">questions</h2>
       <details>
         <summary>Is this official?</summary>
-        <p>Try Omarchy for Windows is maintained in the <a href="https://github.com/omacom/try-omarchy-windows">Omarchy GitHub organization</a>. It is currently a preview, with a stable v1 still in progress. See the project on GitHub for the latest release and known limitations. Learn about Omarchy at <a href="https://omarchy.org">omarchy.org</a>.</p>
+        <p>Try Omarchy for Windows is maintained under <a href="https://github.com/omacom/try-omarchy-windows">Omacom</a>, alongside Try Omarchy for macOS. It uses the <a href="https://omarchy.org/brand/">Omarchy brand assets</a> and runs the Omarchy desktop. Omarchy's mark remains its trademark. The current download is a preview; see the project for its release notes and limits.</p>
       </details>
       <details>
         <summary>Will it mess up my PC?</summary>
@@ -416,7 +421,7 @@
     </section>
 
     <footer>
-      <p>Try Omarchy for Windows is an open-source preview. Follow development in the <a href="https://github.com/omacom/try-omarchy-windows">Omarchy GitHub organization</a>.</p>
+      <p>Try Omarchy for Windows is an open-source preview maintained under <a href="https://github.com/omacom/try-omarchy-windows">Omacom</a>.</p>
       <p class="credits">
         Built on the work of <a href="https://github.com/basecamp/omarchy">Omarchy</a> by DHH / Basecamp,
         <a href="https://github.com/themartiano/try-omarchy">try-omarchy</a> by Eduardo,
