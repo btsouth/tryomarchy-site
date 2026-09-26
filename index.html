@@ -1,475 +1,653 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>Try Omarchy for Windows</title>
-  <meta name="description" content="Try the full Omarchy Linux desktop in a window on Windows. No repartitioning or dual boot. Your Linux files persist between sessions.">
-
-  <meta property="og:site_name" content="Try Omarchy for Windows">
-  <meta property="og:title" content="Try Omarchy for Windows">
-  <meta property="og:description" content="Try the full Omarchy Linux desktop in a window on Windows. No repartitioning or dual boot. Your Linux files persist between sessions.">
-  <meta property="og:image" content="https://tryomarchy.com/og.png">
-  <meta property="og:image:alt" content="Try Omarchy for Windows">
-  <meta property="og:url" content="https://tryomarchy.com">
-  <meta property="og:type" content="website">
-
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Try Omarchy for Windows">
-  <meta name="twitter:description" content="Try the full Omarchy Linux desktop in a window on Windows. No repartitioning or dual boot. Your Linux files persist between sessions.">
-  <meta name="twitter:image" content="https://tryomarchy.com/og.png">
-
-  <meta name="theme-color" content="#0e1116">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-
-  <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/JetBrainsMono-Bold.woff2" as="font" type="font/woff2" crossorigin>
-
-  <style>
-    @font-face {
-      font-family: 'JetBrains Mono';
-      font-style: normal;
-      font-weight: 400;
-      font-display: swap;
-      src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2');
-    }
-    @font-face {
-      font-family: 'JetBrains Mono';
-      font-style: normal;
-      font-weight: 700;
-      font-display: swap;
-      src: url('/fonts/JetBrainsMono-Bold.woff2') format('woff2');
-    }
-
-    :root {
-      --bg: #0e1116;
-      --panel: #151a21;
-      --border: #262d37;
-      --text: #e8eaed;
-      --muted: #9aa4af;
-      --green: #9ece6a;
-      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      --mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html { scroll-behavior: smooth; }
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      .cursor { animation: none; }
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--sans);
-      font-size: 1.0625rem;
-      line-height: 1.65;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    ::selection { background: rgba(158, 206, 106, 0.35); }
-
-    .wrap {
-      max-width: 42rem;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
-
-    a { color: var(--text); text-decoration-color: rgba(255, 255, 255, 0.3); text-underline-offset: 3px; }
-    a:hover { text-decoration-color: var(--green); }
-
-    :focus-visible { outline: 2px solid var(--green); outline-offset: 2px; border-radius: 2px; }
-
-    /* header / hero */
-
-    header { padding: 5.5rem 0 0; }
-
-    .wordmark {
-      font-family: var(--mono);
-      font-weight: 700;
-      font-size: 1rem;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      gap: 0.4em;
-    }
-
-    .brand-mark { width: 2rem; height: 2rem; }
-
-    .cursor {
-      display: inline-block;
-      width: 0.55em;
-      height: 1.05em;
-      background: var(--green);
-      animation: blink 1.2s steps(1) infinite;
-    }
-    @keyframes blink { 50% { opacity: 0; } }
-
-    h1 {
-      font-size: clamp(1.9rem, 5.5vw, 2.7rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-      margin-top: 1.25rem;
-      text-wrap: balance;
-    }
-
-    .lede {
-      color: var(--muted);
-      font-size: 1.125rem;
-      max-width: 36rem;
-      margin-top: 1.25rem;
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      margin-top: 2rem;
-    }
-
-    .btn {
-      display: inline-block;
-      font-weight: 600;
-      font-size: 1rem;
-      padding: 0.7rem 1.4rem;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: background 0.15s ease, border-color 0.15s ease;
-    }
-    .btn-primary { background: var(--green); color: #0b120d; }
-    .btn-primary:hover { background: #b5dd8b; }
-    .btn-ghost { border: 1px solid var(--border); color: var(--text); }
-    .btn-ghost:hover { border-color: var(--muted); }
-
-    .meta-line {
-      font-family: var(--mono);
-      font-size: 0.8125rem;
-      color: var(--muted);
-      margin-top: 1.5rem;
-    }
-
-    .release-line { font-size: 0.875rem; color: var(--muted); margin-top: 0.8rem; }
-
-    /* media */
-
-    .media {
-      position: relative;
-      margin-top: 3.5rem;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-      background: var(--panel);
-      width: min(100vw - 3rem, 60rem);
-      margin-left: 50%;
-      transform: translateX(-50%);
-      cursor: zoom-in;
-    }
-
-    .media video, .media img { display: block; width: 100%; height: auto; }
-
-    .media.zoomed, .shot.zoomed {
-      position: fixed;
-      inset: 0;
-      z-index: 50;
-      width: auto;
-      margin: 0;
-      transform: none;
-      border: 0;
-      border-radius: 0;
-      background: rgba(10, 13, 17, 0.97);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: zoom-out;
-    }
-    .media.zoomed video, .shot.zoomed img { width: auto; max-width: 96vw; max-height: 92vh; }
-    .shot.zoomed img { border: 0; border-radius: 0; }
-    .shot.zoomed figcaption { display: none; }
-
-    .vbtn {
-      position: absolute;
-      font-family: var(--mono);
-      font-size: 0.8125rem;
-      color: var(--text);
-      background: rgba(14, 17, 22, 0.8);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 0.35rem 0.7rem;
-      cursor: pointer;
-    }
-    .vbtn:hover { border-color: var(--green); }
-    .vbtn-zoom { top: 0.75rem; right: 0.75rem; }
-    .vbtn-replay {
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 0.9375rem;
-      padding: 0.55rem 1.1rem;
-    }
-
-    .caption {
-      font-size: 0.875rem;
-      color: var(--muted);
-      margin-top: 0.75rem;
-    }
-
-    .shot {
-      position: relative;
-      margin-top: 2rem;
-      width: min(100vw - 3rem, 60rem);
-      margin-left: 50%;
-      transform: translateX(-50%);
-      cursor: zoom-in;
-    }
-    .shot img {
-      display: block;
-      width: 100%;
-      height: auto;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-    }
-    .shot figcaption { width: min(100%, 39rem); margin: 0.75rem auto 0; }
-
-    /* sections */
-
-    section { margin-top: 4.5rem; }
-
-    .label {
-      font-family: var(--mono);
-      font-size: 0.95rem;
-      font-weight: 400;
-      color: var(--green);
-      margin-bottom: 1rem;
-    }
-
-    section p + p { margin-top: 0.75rem; }
-
-    .muted { color: var(--muted); }
-
-    .points { display: grid; gap: 1.75rem; }
-    .points h3 { font-size: 1.0625rem; font-weight: 600; }
-    .points p { color: var(--muted); margin-top: 0.35rem; }
-
-    pre {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-family: var(--mono);
-      font-size: 0.85rem;
-      line-height: 1.8;
-      padding: 1.1rem 1.25rem;
-      overflow-x: auto;
-      margin-top: 1.5rem;
-    }
-    pre .p { color: var(--green); }
-    pre .c { color: var(--muted); }
-
-    .note {
-      font-size: 0.9375rem;
-      color: var(--muted);
-      margin-top: 1rem;
-    }
-
-    /* faq */
-
-    .faq details { border-top: 1px solid var(--border); }
-    .faq details:last-child { border-bottom: 1px solid var(--border); }
-
-    .faq summary {
-      list-style: none;
-      cursor: pointer;
-      padding: 1rem 0;
-      font-weight: 600;
-      display: flex;
-      align-items: baseline;
-      gap: 0.75rem;
-    }
-    .faq summary::-webkit-details-marker { display: none; }
-    .faq summary::before {
-      content: '+';
-      font-family: var(--mono);
-      color: var(--green);
-      width: 1rem;
-      flex-shrink: 0;
-    }
-    .faq details[open] summary::before { content: '-'; }
-
-    .faq details p { color: var(--muted); padding: 0 0 1.25rem 1.75rem; }
-
-    /* footer */
-
-    footer {
-      margin-top: 5.5rem;
-      border-top: 1px solid var(--border);
-      padding: 2.5rem 0 3.5rem;
-      font-size: 0.875rem;
-      color: var(--muted);
-    }
-
-    footer p + p { margin-top: 0.75rem; }
-
-    footer .credits { line-height: 2; }
-    footer a { color: var(--muted); }
-    footer a:hover { color: var(--text); }
-
-    @media (max-width: 480px) {
-      header { padding-top: 3.5rem; }
-      section { margin-top: 3.5rem; }
-      .frame-body { font-size: 0.78rem; }
-    }
-  </style>
-</head>
-<body>
-
-  <div class="wrap">
-
-    <header>
-      <p class="wordmark"><img class="brand-mark" src="/favicon.svg" alt="">try omarchy<span class="cursor" aria-hidden="true"></span></p>
-      <h1>The Omarchy desktop, alongside Windows.</h1>
-      <p class="lede">The full Omarchy Linux desktop, running in a window on your Windows PC. No repartitioning or dual boot. Your Linux files stay between sessions, and Windows keeps working alongside it.</p>
-      <div class="actions">
-        <a class="btn btn-primary" href="/download">Download for Windows</a>
-        <a class="btn btn-ghost" href="https://github.com/omacom/try-omarchy-windows">GitHub</a>
-      </div>
-      <p class="release-line">Current release: <a href="https://github.com/omacom/try-omarchy-windows/releases/tag/v0.3.0">v0.3.0</a>. <a href="https://github.com/omacom/try-omarchy-windows/blob/master/docs/COMPATIBILITY.md">Check compatibility</a> before downloading.</p>
-      <p class="meta-line">windows 10 &amp; 11 home &amp; pro &middot; free &middot; open source &middot; no partitions, no dual boot &middot; on a mac? <a href="https://github.com/omacom/try-omarchy">try-omarchy</a></p>
-    </header>
-
-    <figure class="media" id="demo">
-      <video id="demo-video" autoplay muted playsinline preload="auto" poster="/assets/poster-hero.jpg" aria-label="Screen recording of the Omarchy desktop running in a window on Windows">
-        <source src="/assets/try-omarchy-hero.mp4" type="video/mp4">
-      </video>
-      <button class="vbtn vbtn-zoom" id="demo-zoom" aria-label="Bigger view">&#10530;</button>
-      <button class="vbtn vbtn-replay" id="demo-replay" hidden>&#8635; replay</button>
-    </figure>
-    <p class="caption">The real thing, on Windows, in real time: the desktop, the system panel, the screensavers, all live in the Try Omarchy window. Click for a bigger view.</p>
-
-    <section>
-      <h2 class="label">why try it here</h2>
-      <div class="points">
-        <div>
-          <h3>Keep your Windows setup</h3>
-          <p>No new partitions or bootloader. Setup can enable Windows Hypervisor Platform and ask for a restart. Use the built-in uninstall option when you are finished.</p>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Try Omarchy on Mac and Windows</title>
+    <meta
+      name="description"
+      content="Explore the Omarchy Linux desktop in a virtual machine on your Mac or Windows PC. Free, open source, and no dual boot required."
+    />
+    <link rel="canonical" href="https://tryomarchy.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Try Omarchy on Mac and Windows" />
+    <meta
+      property="og:description"
+      content="A taste of Omarchy. On your Mac or Windows PC."
+    />
+    <meta property="og:url" content="https://tryomarchy.com/" />
+    <meta property="og:image" content="https://tryomarchy.com/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Try Omarchy on Mac and Windows" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#222222" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/assets/site.css" />
+    <script src="/assets/site.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#to-top">Skip to content</a>
+    <div
+      id="try-home"
+      data-theme="miasma"
+      data-motion="on"
+      aria-label="Omarchy.org try page design"
+    >
+      <header class="to-top">
+        <div class="to-wrap to-nav">
+          <a
+            class="to-brand"
+            href="https://omarchy.org/"
+            aria-label="Omarchy home"
+            ><span class="to-symbol" aria-hidden="true"></span
+          ></a>
+          <nav class="to-native-nav" aria-label="Omarchy navigation">
+            <a href="https://omarchy.org/news/">News</a
+            ><a href="https://omarchy.org/manual/">Manual</a
+            ><a href="https://plugins.omarchy.org/">Plugins</a
+            ><a href="https://omarchy.org/themes/">Themes</a>
+          </nav>
+          <div class="to-native-tools">
+            <div class="to-picker">
+              <button
+                type="button"
+                class="to-icon-button cursor-interaction"
+                id="to-theme-button"
+                aria-label="Change website theme"
+                aria-expanded="false"
+                aria-controls="to-theme-menu"
+              >
+                <svg
+                  class="lucide"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M12 3a9 9 0 1 0 0 18h2a2 2 0 0 0 0-4h-1a2 2 0 0 1 0-4h4a4 4 0 0 0 4-4c0-3-4-6-9-6Z"
+                  />
+                  <circle cx="7" cy="10" r=".6" />
+                  <circle cx="11" cy="7" r=".6" />
+                  <circle cx="16" cy="8" r=".6" />
+                </svg>
+              </button>
+              <div id="to-theme-menu" class="to-theme-menu" hidden>
+                <label for="to-theme-select">Website theme</label
+                ><select id="to-theme-select" class="cursor-interaction">
+                  <option value="miasma">Miasma</option>
+                  <option value="tokyo">Tokyo Night</option>
+                  <option value="latte">Catppuccin Latte</option>
+                </select>
+              </div>
+            </div>
+            <a
+              class="to-icon-button to-hide-mobile"
+              href="https://omarchy.org/news/rss.xml"
+              aria-label="Omarchy RSS"
+              ><svg
+                class="lucide"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M4 4a16 16 0 0 1 16 16M4 11a9 9 0 0 1 9 9" />
+                <circle cx="5" cy="19" r="1" /></svg></a
+            ><a
+              class="to-icon-button to-hide-mobile"
+              href="https://github.com/omacom/omarchy"
+              aria-label="Omarchy on GitHub"
+              ><svg
+                class="lucide"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="m7 7-5 5 5 5m10-10 5 5-5 5m-3-13-4 20" /></svg></a
+            ><a class="to-install" href="https://omarchy.org/#install"
+              >Install</a
+            ><button
+              type="button"
+              class="to-icon-button to-mobile-menu cursor-interaction"
+              aria-label="Open navigation"
+              aria-expanded="false"
+              aria-controls="to-mobile-navigation"
+            >
+              <svg
+                class="lucide"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
         </div>
-        <div>
-          <h3>It's the real thing</h3>
-          <p>This is the real Omarchy desktop, running on your machine. Every theme, every screensaver, the whole experience. Not a slideshow of someone else's screen.</p>
+        <nav
+          id="to-mobile-navigation"
+          aria-label="Mobile Omarchy navigation"
+          hidden
+        >
+          <a href="https://omarchy.org/news/">News</a
+          ><a href="https://omarchy.org/manual/">Manual</a
+          ><a href="https://plugins.omarchy.org/">Plugins</a
+          ><a href="https://omarchy.org/themes/">Themes</a
+          ><a href="https://omarchy.org/#install">Install</a>
+        </nav>
+      </header>
+      <main id="to-top" tabindex="-1">
+        <section class="to-hero" aria-label="Try Omarchy on Mac and Windows">
+          <canvas class="to-particles" aria-hidden="true"></canvas>
+          <div class="to-wrap to-hero-content">
+            <div class="to-eyebrow">TRY OMARCHY</div>
+            <div class="to-wordmark" aria-hidden="true"></div>
+            <h1>A taste of Omarchy.<br />On your Mac or Windows PC.</h1>
+            <p class="to-lead">
+              All of Omarchy, running in a virtual machine.<br />Try it without
+              repartitioning or dual boot.
+            </p>
+            <div class="to-actions">
+              <a class="to-action to-primary cursor-interaction" href="#to-mac"
+                ><svg
+                  class="lucide"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M4 16V5h16v11M2 19h20l-2-3H4z" /></svg
+                >Download for Mac<span aria-hidden="true">↓</span></a
+              ><a class="to-action cursor-interaction" href="#to-windows"
+                ><svg
+                  class="lucide"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="3" y="3" width="18" height="13" rx="1" />
+                  <path d="M12 16v5m-4 0h8" /></svg
+                >Download for Windows<span aria-hidden="true">↓</span></a
+              >
+            </div>
+            <div class="to-meta">
+              <span
+                ><svg
+                  class="lucide"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="m5 12 4 4L19 6" /></svg
+                >Free & open source</span
+              ><span>Apple Silicon</span><span>Windows 10 & 11 · x86_64</span>
+            </div>
+          </div>
+        </section>
+        <section class="to-demo to-wrap" aria-label="Product preview">
+          <div class="to-demohead">
+            <div class="to-demo-label">
+              <span class="to-dot"></span>See it in action
+            </div>
+            <div class="to-tabs" role="tablist" aria-label="Preview platform">
+              <button
+                class="cursor-interaction"
+                type="button"
+                id="to-mac-tab"
+                role="tab"
+                aria-selected="true"
+                aria-controls="to-preview"
+                data-platform="mac"
+              >
+                <svg
+                  class="lucide"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M4 16V5h16v11M2 19h20l-2-3H4z" /></svg
+                >Mac</button
+              ><button
+                class="cursor-interaction"
+                type="button"
+                id="to-windows-tab"
+                role="tab"
+                aria-selected="false"
+                tabindex="-1"
+                aria-controls="to-preview"
+                data-platform="windows"
+              >
+                <svg
+                  class="lucide"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="3" y="3" width="18" height="13" rx="1" />
+                  <path d="M12 16v5m-4 0h8" /></svg
+                >Windows
+              </button>
+            </div>
+          </div>
+          <figure>
+            <div
+              id="to-preview"
+              tabindex="0"
+              class="to-shot"
+              role="tabpanel"
+              aria-labelledby="to-mac-tab"
+            >
+              <img
+                id="to-mac-image"
+                src="/assets/mac.webp"
+                alt="Try Omarchy running in a macOS window, showing the Quattro wallpaper. Screenshot from the Mac project's README."
+                width="1280"
+                height="803"
+              /><video
+                id="to-windows-image"
+                controls
+                playsinline
+                preload="none"
+                poster="/assets/windows.webp"
+                width="1364"
+                height="766"
+                aria-label="Try Omarchy on Windows demonstration"
+                hidden
+              >
+                <source src="/assets/try-omarchy-hero.mp4" type="video/mp4" />
+                Your browser does not support video.
+                <a href="/assets/try-omarchy-hero.mp4"
+                  >Download the Windows demo</a
+                >.
+              </video>
+            </div>
+            <figcaption class="to-caption">
+              <span id="to-platform-caption"
+                >Omarchy on macOS. Your Mac is still your Mac.</span
+              ><a id="to-source" href="https://github.com/omacom/try-omarchy"
+                >Screenshot source ↗</a
+              >
+            </figcaption>
+          </figure>
+        </section>
+        <section class="to-section to-alt" id="to-experience">
+          <div class="to-wrap">
+            <div class="to-sectionhead">
+              <div>
+                <div class="to-kicker">The experience</div>
+                <h2>The full desktop. In a window.</h2>
+              </div>
+              <p>
+                Explore the desktop while keeping your familiar setup close at
+                hand.
+              </p>
+            </div>
+            <div class="to-benefits">
+              <article class="to-benefit">
+                <svg
+                  class="lucide"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="3" y="3" width="18" height="18" rx="1" />
+                  <path d="M3 8h18M9 8v13" />
+                </svg>
+                <h3>Keep your current setup.</h3>
+                <p>
+                  Omarchy runs in an app on your Mac or PC. Your existing
+                  operating system stays in place.
+                </p>
+              </article>
+              <article class="to-benefit">
+                <svg
+                  class="lucide"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="m4 6 6 6-6 6m9 0h7" />
+                </svg>
+                <h3>The whole Linux desktop.</h3>
+                <p>
+                  Tile your windows. Find your theme. Install Linux apps.
+                  Explore a different way to work.
+                </p>
+              </article>
+              <article class="to-benefit">
+                <svg
+                  class="lucide"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="5" y="5" width="14" height="16" rx="2" />
+                  <rect x="9" y="2" width="6" height="5" rx="1" />
+                </svg>
+                <h3>Your worlds, connected.</h3>
+                <p>
+                  Shared folders and clipboard integration help you move between
+                  Omarchy and your host desktop.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+        <section class="to-section to-alt" id="to-download">
+          <div class="to-wrap">
+            <div class="to-sectionhead">
+              <div>
+                <div class="to-kicker">Pick your starting point</div>
+                <h2>Try Omarchy on your computer</h2>
+              </div>
+              <p>Choose your computer.<br />We’ll take you from there.</p>
+            </div>
+            <div class="to-downloads">
+              <article class="to-download" id="to-mac">
+                <div class="to-download-top">
+                  <div class="to-platform-icon">
+                    <svg
+                      class="lucide"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M4 16V5h16v11M2 19h20l-2-3H4z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3>Try Omarchy for Mac</h3>
+                    <p class="to-small">APPLE SILICON · macOS 15+</p>
+                  </div>
+                </div>
+                <p>
+                  A native Mac app that brings the Omarchy desktop to Apple
+                  Silicon.
+                </p>
+                <ul>
+                  <li>Hardware-accelerated graphics</li>
+                  <li>Shared clipboard and an optional shared Mac folder</li>
+                  <li>Open the DMG and drag the app to Applications</li>
+                </ul>
+                <p class="to-requirements">
+                  Allow at least 8 GB of free disk space to get started. Intel
+                  Macs are not supported.
+                </p>
+                <a
+                  class="to-action to-primary cursor-interaction"
+                  href="https://github.com/omacom/try-omarchy/releases/latest/download/TryOmarchy.dmg"
+                  >Download for Mac<span aria-hidden="true">↓</span></a
+                ><a
+                  class="to-guide"
+                  href="https://github.com/omacom/try-omarchy#quick-start"
+                  >Mac setup & requirements ↗</a
+                >
+                <div class="to-release-links">
+                  <a href="https://github.com/omacom/try-omarchy/releases"
+                    >Release notes</a
+                  ><a href="https://github.com/omacom/try-omarchy"
+                    >Source code</a
+                  >
+                </div>
+              </article>
+              <article class="to-download" id="to-windows">
+                <div class="to-download-top">
+                  <div class="to-platform-icon">
+                    <svg
+                      class="lucide"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <rect x="3" y="3" width="18" height="13" rx="1" />
+                      <path d="M12 16v5m-4 0h8" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3>Try Omarchy for Windows</h3>
+                    <p class="to-small">WINDOWS 10 & 11 · x86_64</p>
+                  </div>
+                </div>
+                <p>
+                  The Omarchy desktop in a Windows app, with guided setup to get
+                  you started.
+                </p>
+                <ul>
+                  <li>GPU acceleration with a CPU fallback</li>
+                  <li>Clipboard, file transfers, and shared folders</li>
+                  <li>Setup may enable virtualization and require a restart</li>
+                </ul>
+                <p class="to-requirements">
+                  Hardware virtualization is required. Setup downloads several
+                  GB. Windows on ARM is not supported.
+                </p>
+                <a
+                  class="to-action to-primary cursor-interaction"
+                  href="/download"
+                  >Download for Windows<span aria-hidden="true">↓</span></a
+                ><a
+                  class="to-guide"
+                  href="https://github.com/omacom/try-omarchy-windows/blob/master/docs/COMPATIBILITY.md"
+                  >Windows setup & requirements ↗</a
+                >
+                <div class="to-release-links">
+                  <a
+                    href="https://github.com/omacom/try-omarchy-windows/releases"
+                    >Release notes</a
+                  ><a href="https://github.com/omacom/try-omarchy-windows"
+                    >Source code</a
+                  >
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+        <section class="to-section" id="to-setup">
+          <div class="to-wrap">
+            <div class="to-sectionhead">
+              <div>
+                <div class="to-kicker">Getting started</div>
+                <h2>From curious to exploring.</h2>
+              </div>
+            </div>
+            <div class="to-steps">
+              <article>
+                <div class="to-stepno">01</div>
+                <h3>Get the app.</h3>
+                <p>Choose the Mac or Windows download for your computer.</p>
+              </article>
+              <article>
+                <div class="to-stepno">02</div>
+                <h3>Follow the setup.</h3>
+                <p>
+                  The app walks you through preparing your Omarchy environment.
+                </p>
+              </article>
+              <article>
+                <div class="to-stepno">03</div>
+                <h3>Make yourself at home.</h3>
+                <p>
+                  Open a terminal, try the shortcuts, and see where your
+                  curiosity takes you.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+        <section class="to-section to-alt">
+          <div class="to-wrap to-faq">
+            <div>
+              <div class="to-kicker">A few good questions</div>
+              <h2>Before you<br />jump in.</h2>
+            </div>
+            <div>
+              <details open>
+                <summary class="cursor-interaction">
+                  Does this replace macOS or Windows?
+                </summary>
+                <p>
+                  No. Omarchy runs in a virtual machine inside an app. There is
+                  no repartitioning or dual boot. Windows setup may enable its
+                  virtualization feature and ask for a restart.
+                </p>
+              </details>
+              <details>
+                <summary class="cursor-interaction">
+                  Is this the full Omarchy desktop?
+                </summary>
+                <p>
+                  Yes. You can explore the desktop, themes, and Linux apps. Host
+                  integration and hardware support differ between the Mac and
+                  Windows versions. Performance depends on your computer and the
+                  app. Video decoding on Mac is currently CPU-only.
+                </p>
+              </details>
+              <details>
+                <summary class="cursor-interaction">
+                  Will my Linux files stay between sessions?
+                </summary>
+                <p>
+                  Windows keeps your Linux files in its installation folder. On
+                  Mac, check the app's storage mode: persistent environments
+                  keep your changes, while disposable environments do not.
+                </p>
+              </details>
+              <details>
+                <summary class="cursor-interaction">
+                  What if I’m ready to install Omarchy directly?
+                </summary>
+                <p>
+                  Visit
+                  <a
+                    href="https://omarchy.org/"
+                    style="text-decoration: underline"
+                    >omarchy.org</a
+                  >
+                  for installation options and hardware guidance.
+                </p>
+              </details>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer class="to-native-footer">
+        <div class="to-wrap">
+          <div class="to-native-footer-grid">
+            <div class="to-native-footer-brand">
+              <div class="to-footer-mark" role="img" aria-label="Omarchy"></div>
+              <p>
+                Beautiful, fun & agentic Linux by
+                <a href="https://dhh.dk/">DHH</a>
+              </p>
+              <p class="to-muted">The malleable OS for the age of agents.</p>
+            </div>
+            <div>
+              <h3>Explore</h3>
+              <a href="https://omarchy.org/news/">News</a
+              ><a href="https://omarchy.org/manual/">Manual</a
+              ><a href="https://plugins.omarchy.org/">Plugins</a
+              ><a href="https://omarchy.org/themes/">Themes</a>
+            </div>
+            <div>
+              <h3>Community</h3>
+              <a href="https://omarchy.org/meetups/">Meetups</a
+              ><a href="https://omarchy.org/teams/">Teams</a
+              ><a href="https://omarchy.org/workstations/">Workstations</a
+              ><a href="https://omarchy.org/doctrine/">Doctrine</a>
+            </div>
+            <div>
+              <h3>Foundation</h3>
+              <a href="https://omarchy.org/foundation/">About</a
+              ><a href="https://omarchy.org/staff/">Staff</a
+              ><a href="https://omarchy.org/patrons/">Patrons</a>
+            </div>
+            <div>
+              <h3>Project</h3>
+              <a href="https://omarchy.org/security/">Security</a
+              ><a href="https://github.com/omacom/omarchy">GitHub</a
+              ><a href="https://omarchy.org/brand/">Brand</a>
+            </div>
+          </div>
+          <div class="to-footer-bottom">
+            <span>Try Omarchy · Free & open source</span
+            ><button
+              class="to-motion cursor-interaction"
+              type="button"
+              aria-pressed="true"
+            >
+              <svg
+                class="lucide"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M8 4v16M16 4v16" /></svg
+              ><span>Motion on</span></button
+            ><a href="https://github.com/btsouth/tryomarchy-site"
+              >Website source</a
+            >
+          </div>
         </div>
-        <div>
-          <h3>Use your graphics card</h3>
-          <p>GPU acceleration makes the desktop and video responsive on compatible drivers. A CPU rendering option is available when a graphics driver needs a fallback.</p>
-        </div>
-        <div>
-          <h3>It behaves like an app</h3>
-          <p>It runs in a normal window, not a VM console. The Windows key drives Omarchy while the window is focused and Windows everywhere else. Copy text, images and files between desktops, or drop files into Omarchy without a transfer window taking over.</p>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <h2 class="label">make it yours</h2>
-      <p class="muted">Use your Windows camera and microphone in Linux apps, drag files into an open folder or Downloads, and keep working while larger transfers run. Audio playback, shared folders and clipboard integration connect the two desktops.</p>
-      <p class="muted">Switch speakers and microphones while Omarchy runs, choose your fullscreen monitor, or launch Omarchy when you sign in to Windows. Open Windows Settings from inside Omarchy and add approved Windows apps to its launcher. Host battery status appears in Linux, and the bundled runtime returns unused guest memory to Windows while Omarchy keeps running. Back up your installation, take a snapshot before making changes, grow its disk or move it to another drive. Signed updates and recovery tools help keep your files safe. <a href="https://github.com/omacom/try-omarchy-windows/releases/latest">Read the release notes</a> for current features and limits.</p>
-    </section>
-
-    <section>
-      <h2 class="label">how it works</h2>
-      <p class="muted">Under the hood it's a lightweight virtual machine, using virtualization that Windows already includes (the same one WSL2 uses). A ready-made Omarchy system boots inside a normal app window. Your Windows apps keep working like always; the Linux desktop just lives in its own window.</p>
-      <p class="muted">Want the technical details? They're all written up in <a href="https://github.com/omacom/try-omarchy-windows/blob/master/docs/FINDINGS.md">FINDINGS.md</a>.</p>
-    </section>
-
-    <section id="try">
-      <h2 class="label">try it today</h2>
-      <p class="muted"><a href="/download">Download the TryOmarchy.exe launcher</a> and open it. The first run guides you through setup: Windows may ask permission to switch on its virtualization feature and restart once, then the app downloads the graphics runtime and a multi-gigabyte Omarchy image. Everything it needs comes with it, QEMU included. Later, open Settings before boot or make a shortcut launch Omarchy directly. No commands or VM console required.</p>
-      <figure class="shot">
-        <img src="/assets/first-run.png" alt="The Omarchy setup screen running inside the Try Omarchy window on Windows" loading="lazy">
-        <button class="vbtn vbtn-zoom" aria-label="Bigger view">&#10530;</button>
-        <figcaption class="caption">First run: Omarchy sets itself up. Choose whether your shortcuts open Settings or launch the desktop directly.</figcaption>
-      </figure>
-    </section>
-
-    <section class="faq">
-      <h2 class="label">questions</h2>
-      <details>
-        <summary>Is this official?</summary>
-        <p>Try Omarchy for Windows is maintained under <a href="https://github.com/omacom/try-omarchy-windows">Omacom</a>, alongside Try Omarchy for macOS. It uses the <a href="https://omarchy.org/brand/">Omarchy brand assets</a> and runs the Omarchy desktop. Omarchy's mark remains its trademark. See the current release notes and compatibility guide for features and limits.</p>
-      </details>
-      <details>
-        <summary>Will it mess up my PC?</summary>
-        <p>It does not repartition your drive or replace your bootloader. Setup may enable Windows Hypervisor Platform, request a restart and add app shortcuts. Linux data lives in the installation folder. Use Settings to back up your files or uninstall the app; shared folders remain your Windows files.</p>
-      </details>
-      <details>
-        <summary>Which versions of Windows work?</summary>
-        <p>Try Omarchy targets 64-bit Windows 10 and 11, Home or Pro, with hardware virtualization enabled. Graphics acceleration depends on your driver, and CPU rendering is available when needed. See the <a href="https://github.com/omacom/try-omarchy-windows/blob/master/docs/COMPATIBILITY.md">compatibility guide</a> for requirements and known limits.</p>
-      </details>
-      <details>
-        <summary>What if something does not work on my PC?</summary>
-        <p>When Try Omarchy is running, choose <strong>Create diagnostics...</strong> from its tray icon and review the ZIP for local details before <a href="https://github.com/omacom/try-omarchy-windows/issues/new/choose">reporting the problem on GitHub</a>. If it cannot start, see the <a href="https://github.com/omacom/try-omarchy-windows#reporting-a-problem">reporting instructions</a>. Include your Windows version, CPU, GPU and driver, and what happened. Try Omarchy can use CPU rendering if the GPU path fails.</p>
-      </details>
-      <details>
-        <summary>What kind of PC do I need?</summary>
-        <p>You need an x86_64 processor with hardware virtualization enabled, enough free space for the downloaded image and a growing Linux disk, and memory available for both Windows and Omarchy. Graphics performance depends on your GPU and driver. Check the compatibility guide before downloading.</p>
-      </details>
-      <details>
-        <summary>Can I install Linux apps?</summary>
-        <p>Yes. This is a full Arch Linux environment, so <code>pacman</code>, <code>yay</code>, VS Code, and other graphical Linux apps work normally. See the <a href="https://github.com/omacom/try-omarchy-windows/blob/master/docs/COMPATIBILITY.md">compatibility guide</a> for current VM limits.</p>
-      </details>
-      <details>
-        <summary>How do I actually install Omarchy?</summary>
-        <p>That's the idea: try it here first. When you're ready for the real thing, Omarchy installs straight onto your machine. Head to <a href="https://omarchy.org">omarchy.org</a>.</p>
-      </details>
-    </section>
-
-    <footer>
-      <p>Try Omarchy for Windows is an open-source app maintained under <a href="https://github.com/omacom/try-omarchy-windows">Omacom</a>.</p>
-      <p class="credits">
-        Built on the work of <a href="https://github.com/basecamp/omarchy">Omarchy</a> by DHH / Basecamp,
-        <a href="https://github.com/omacom/try-omarchy">try-omarchy</a> by Eduardo,
-        <a href="https://github.com/jorge-huxley/try-omarchy-win">try-omarchy-win</a> by Jorge Silva,
-        <a href="https://github.com/cmspam/winq-emu">WINQ-EMU</a> by cmspam,
-        <a href="https://github.com/Chainfire/omarchy-windows-hyperv-gpu">omarchy-windows-hyperv-gpu</a> by Chainfire, and
-        <a href="https://github.com/dockur/windows">dockur/windows</a>.
-      </p>
-      <p>MIT licensed. Open to collaboration, see <a href="https://github.com/omacom/try-omarchy-windows">GitHub</a>.</p>
-    </footer>
-
-  </div>
-
-  <script>
-    (function () {
-      var zoomedFig = null;
-      function setZoom(fig, on) {
-        fig.classList.toggle('zoomed', on);
-        var btn = fig.querySelector('.vbtn-zoom');
-        btn.innerHTML = on ? '&times;' : '&#10530;';
-        btn.setAttribute('aria-label', on ? 'Close bigger view' : 'Bigger view');
-        document.body.style.overflow = on ? 'hidden' : '';
-        zoomedFig = on ? fig : null;
-      }
-      document.querySelectorAll('.media, .shot').forEach(function (fig) {
-        fig.addEventListener('click', function (e) {
-          if (e.target.classList && e.target.classList.contains('vbtn-replay')) return;
-          setZoom(fig, !fig.classList.contains('zoomed'));
-        });
-      });
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && zoomedFig) setZoom(zoomedFig, false);
-      });
-      var vid = document.getElementById('demo-video');
-      var replay = document.getElementById('demo-replay');
-      vid.addEventListener('ended', function () { replay.hidden = false; });
-      replay.addEventListener('click', function (e) {
-        e.stopPropagation();
-        replay.hidden = true;
-        vid.currentTime = 0;
-        vid.play();
-      });
-    })();
-  </script>
-
-</body>
+      </footer>
+    </div>
+  </body>
 </html>
