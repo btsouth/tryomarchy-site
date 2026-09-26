@@ -1,0 +1,14 @@
+{
+  "repository": "https://github.com/btsouth/omarchy-site.git",
+  "revision": "c5c32c09fe2f9a556d43a93d5d8e22b070b3cf34",
+  "proposal": "https://github.com/omacom/omarchy-site/pull/461",
+  "sharedComponents": [
+    "SiteHeader",
+    "SiteFooter",
+    "HeroShader",
+    "HeroPixelField",
+    "ThemePicker",
+    "SearchPalette",
+    "MusicControl"
+  ]
+}
