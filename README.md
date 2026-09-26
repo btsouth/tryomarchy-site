@@ -1,6 +1,6 @@
 # tryomarchy.com
 
-Try Omarchy for Mac and Windows. Static HTML, CSS, and JavaScript with local fonts and real product media. No build step, trackers, or third-party runtime requests.
+Try Omarchy for Mac and Windows. Static HTML, CSS, and JavaScript with local fonts and real product media. No build step or third-party runtime dependencies in the source. Cloudflare injects its Web Analytics script on the live site.
 
 ## Deployment
 
