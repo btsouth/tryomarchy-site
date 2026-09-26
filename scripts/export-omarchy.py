@@ -13,7 +13,7 @@ import sys
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
-REVISION = 'c5c32c09fe2f9a556d43a93d5d8e22b070b3cf34'
+REVISION = 'ffda2ee1743d3df9b03f41e3d49a6962e168a32e'
 SOURCE = 'https://github.com/btsouth/omarchy-site.git'
 
 
@@ -74,17 +74,8 @@ import { TryPage } from '@/astro/pages/TryPage'
     edit(work / 'src/lib/hash-scroll.ts', "if (window.location.pathname === '/') {", "if (window.location.origin === 'https://omarchy.org' && window.location.pathname === '/') {")
     # Native <a> links outside the Link wrapper need their public destination.
     edit(work / 'src/components/SiteHeader.tsx', 'href="/news/rss.xml"', 'href="https://omarchy.org/news/rss.xml"')
-    edit(work / 'src/astro/pages/TryPage.tsx', 'href="/manual/getting-started/"', 'href="https://omarchy.org/manual/getting-started/"')
-    # Keep the existing Windows recording, loaded only when its tab opens.
-    page = work / 'src/astro/pages/TryPage.tsx'
-    text = page.read_text()
-    text, count = re.subn(r'<img\s+src="/images/try/windows.webp".*?/>', '''<video controls playsInline preload="none" poster="/images/try/windows.webp" width="1364" height="766" className="aspect-[1280/803] w-full border border-border-subtle bg-bg-deep object-contain" aria-label="Try Omarchy on Windows demonstration">
-                  <source src="/assets/try-omarchy-hero.mp4" type="video/mp4" />
-                </video>''', text, flags=re.S)
-    if count != 1:
-        raise RuntimeError('Windows media integration point changed')
-    # Base UI unmounts the old panel when it is deactivated, stopping playback.
-    page.write_text(text)
+    # TryPage is deliberately untouched: copy, media, and interactions are
+    # the exact component proposed upstream, not a standalone variant.
     run('npm', 'run', 'build', cwd=work)
     built = work / 'dist/client'
     # Keep these checks close to the exporter: missing WASM was the easiest

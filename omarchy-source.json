@@ -1,6 +1,6 @@
 {
   "repository": "https://github.com/btsouth/omarchy-site.git",
-  "revision": "c5c32c09fe2f9a556d43a93d5d8e22b070b3cf34",
+  "revision": "ffda2ee1743d3df9b03f41e3d49a6962e168a32e",
   "proposal": "https://github.com/omacom/omarchy-site/pull/461",
   "sharedComponents": [
     "SiteHeader",

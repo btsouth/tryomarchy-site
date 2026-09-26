@@ -12,7 +12,7 @@ To rebuild with Node 24+ and Python 3:
 python3 scripts/export-omarchy.py
 ```
 
-An optional path to an existing source checkout reuses its installed dependencies. The exporter copies the pinned commit into a temporary build directory. It adjusts only the standalone entry point, metadata, outbound navigation, and Windows video, then copies the static output and required assets. The source checkout is not modified.
+An optional path to an existing source checkout reuses its installed dependencies. The exporter copies the pinned commit into a temporary build directory. It adjusts only the standalone entry point, metadata, and outbound navigation, then copies the static output and required assets. The source checkout is not modified.
 
 The shared components and styles come directly from that source. Omarchy navigation and language links lead to the official site. Local download links stay on this page. The official site's analytics integration is omitted; Cloudflare injects its existing Web Analytics script independently.
 
