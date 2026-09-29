@@ -45,21 +45,29 @@ with tempfile.TemporaryDirectory(prefix='tryomarchy-native-') as temp:
     else:
         run('npm', 'ci', cwd=work)
 
+    # Linux is on tryomarchy.com only: the overlay adds the /linux/ page and its
+    # media, and the patch adds Linux to the proposal's Try page.
+    overlay = ROOT / 'source-overlay'
+    for tree in ['src', 'public']:
+        shutil.copytree(overlay / tree, work / tree, dirs_exist_ok=True)
+    run('patch', '-p1', '--forward', '--batch', '--no-backup-if-mismatch',
+        '-i', str(overlay / 'try-page-linux.patch'), cwd=work)
+
     # Only hosting/navigation changes. Shared header, footer, shaders, theme
     # picker, styles, icons, and fonts are reused, with only link destinations adapted.
     (work / 'src/pages/index.astro').write_text('''---
 import Base from '../layouts/Base.astro'
 import { TryPage } from '@/astro/pages/TryPage'
 ---
-<Base title="Try Omarchy on Mac and Windows" description="Explore the Omarchy Linux desktop in a virtual machine on your Mac or Windows PC. Free, open source, and no dual boot required." path="/">
+<Base title="Try Omarchy on Mac, Windows and Linux" description="Explore the Omarchy Linux desktop in a virtual machine on your Mac, Windows or Linux PC. Free, open source, and no dual boot required." path="/">
   <TryPage client:load />
 </Base>
 ''')
     base = work / 'src/layouts/Base.astro'
     edit(base, "import { ClientRouter } from 'astro:transitions'", '')
     edit(base, '<ClientRouter fallback="swap" />', '')
-    edit(base, 'const url = `${SITE_URL}${path}`', "const url = 'https://tryomarchy.com/'")
-    edit(base, 'const ogImage = socialImage(path)', "const ogImage = { url: 'https://tryomarchy.com/og.png', width: '1200', height: '630', alt: 'Try Omarchy on Mac and Windows' }")
+    edit(base, 'const url = `${SITE_URL}${path}`', "const url = `https://tryomarchy.com${path}`")
+    edit(base, 'const ogImage = socialImage(path)', "const ogImage = { url: 'https://tryomarchy.com/og.png', width: '1200', height: '630', alt: 'Try Omarchy on Mac, Windows and Linux' }")
     text = base.read_text()
     text = re.sub(r'\s*<script is:inline defer data-domain="omarchy.org"[^>]+/>', '', text)
     text = re.sub(r'\s*\{Object.entries\(locales\).*?\)\)\}', '', text, flags=re.S)
@@ -74,22 +82,22 @@ import { TryPage } from '@/astro/pages/TryPage'
     edit(work / 'src/lib/hash-scroll.ts', "if (window.location.pathname === '/') {", "if (window.location.origin === 'https://omarchy.org' && window.location.pathname === '/') {")
     # Native <a> links outside the Link wrapper need their public destination.
     edit(work / 'src/components/SiteHeader.tsx', 'href="/news/rss.xml"', 'href="https://omarchy.org/news/rss.xml"')
-    # TryPage is deliberately untouched: copy, media, and interactions are
-    # the exact component proposed upstream, not a standalone variant.
+    # Apart from the Linux patch above, TryPage is the exact component
+    # proposed upstream, not a standalone variant.
     run('npm', 'run', 'build', cwd=work)
     built = work / 'dist/client'
     # Keep these checks close to the exporter: missing WASM was the easiest
     # way to accidentally ship a static wordmark in place of the real effect.
-    for required in ['index.html', 'ttfx/0.3.2/ttfx.js', 'ttfx/effects/all.wasm',
+    for required in ['index.html', 'linux/index.html', 'ttfx/0.3.2/ttfx.js', 'ttfx/effects/all.wasm',
                      'music/kevin_koontz-we_can_fix_everything.mp3',
                      'data/search-index.json']:
         assert (built / required).is_file(), required
-    for directory in ['_astro', 'ttfx', 'music', 'images/try', 'assets/images/theme-previews']:
+    for directory in ['_astro', 'ttfx', 'music', 'images/try', 'images/linux', 'assets/images/theme-previews']:
         dest = ROOT / directory
         if dest.exists():
             shutil.rmtree(dest)
         shutil.copytree(built / directory, dest)
-    for filename in ['index.html', 'brand/omarchy-logo.svg', 'brand/omarchy-wordmark.svg', 'data/search-index.json', 'data/explorer.json']:
+    for filename in ['index.html', 'linux/index.html', 'brand/omarchy-logo.svg', 'brand/omarchy-wordmark.svg', 'data/search-index.json', 'data/explorer.json']:
         dest = ROOT / filename
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(built / filename, dest)

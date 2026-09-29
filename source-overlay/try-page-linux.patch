@@ -1,0 +1,180 @@
+diff --git i/src/astro/pages/TryPage.tsx w/src/astro/pages/TryPage.tsx
+index 8532fd5..e3951ff 100644
+--- i/src/astro/pages/TryPage.tsx
++++ w/src/astro/pages/TryPage.tsx
+@@ -11,11 +11,13 @@ import {
+   DownloadIcon,
+   ArrowUpRightIcon,
+ } from '@/components/icons'
++import { LinuxIcon } from '@/components/icons/LinuxIcon'
+ import { Button } from '@/components/ui/button'
+ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
+ 
+ const MAC = 'https://github.com/omacom/try-omarchy'
+ const WINDOWS = 'https://github.com/omacom/try-omarchy-windows'
++const LINUX = 'https://github.com/btsouth/try-omarchy-linux'
+ const wrap = 'mx-auto max-w-6xl px-5 sm:px-8'
+ const section = 'border-t border-border-subtle py-14 sm:py-20'
+ const link =
+@@ -80,13 +82,42 @@ const platforms = [
+       ),
+     ],
+   },
++  {
++    id: 'linux',
++    name: t('Try Omarchy for Linux'),
++    icon: LinuxIcon,
++    requirements: t('x86_64 · KVM · Flatpak · Preview'),
++    description: t(
++      'Omarchy in a Flatpak app for your Linux desktop, with guided setup.',
++    ),
++    features: [
++      t('GPU acceleration with a CPU fallback'),
++      t('Clipboard, file drops, and a shared folder'),
++      t('Installs with Software and updates itself'),
++    ],
++    note: t(
++      'KVM is required. Setup downloads about 2 GB. Ubuntu needs Flatpak support first. ARM is not supported.',
++    ),
++    download: '/linux.flatpakref',
++    label: t('Download for Linux'),
++    source: LINUX,
++    guide: '/linux/',
++    guideLabel: t('Linux quick start'),
++    quickStart: [
++      t('Download the installer and open it with Software, then choose Install.'),
++      t('Open Try Omarchy from your app menu and choose Try it now.'),
++      t(
++        'Setup downloads Omarchy and starts it with a trial account. The username and password are both omarchy.',
++      ),
++    ],
++  },
+ ]
+ 
+ const benefits = [
+   [
+     t('Keep your current setup.'),
+     t(
+-      'Omarchy runs in an app on your Mac or PC. Your existing operating system stays in place.',
++      'Omarchy runs in an app on your computer. Your existing operating system stays in place.',
+     ),
+   ],
+   [
+@@ -96,27 +127,27 @@ const benefits = [
+   [
+     t('Move between desktops.'),
+     t(
+-      'Copy text and images between desktops. Share a folder with your Mac or Windows PC.',
++      'Copy text and images between desktops. Share a folder with the computer you already use.',
+     ),
+   ],
+ ]
+ const questions = [
+   [
+-    t('Does this replace macOS or Windows?'),
++    t('Does this replace my operating system?'),
+     t(
+-      'No. Omarchy runs in a virtual machine inside an app. There is no repartitioning or dual boot. Windows setup may enable its virtualization feature and ask for a restart.',
++      'No. Omarchy runs in a virtual machine inside an app, on macOS, Windows or Linux. There is no repartitioning or dual boot. Windows setup may enable its virtualization feature and ask for a restart.',
+     ),
+   ],
+   [
+     t('Is this the full Omarchy desktop?'),
+     t(
+-      'Yes. You get the Omarchy desktop, themes, and Linux apps. Hardware support and host integration differ between Mac and Windows. Performance depends on your computer; video decoding on Mac is currently CPU-only.',
++      'Yes. You get the Omarchy desktop, themes, and Linux apps. Hardware support and host integration differ between Mac, Windows and Linux. Performance depends on your computer; video decoding on Mac is currently CPU-only.',
+     ),
+   ],
+   [
+     t('Will my Linux files stay between sessions?'),
+     t(
+-      'Yes, when using a persistent VM. Windows keeps the Linux disk in the folder you chose during setup. Mac saves changes by default; disposable mode discards them when you close the app.',
++      'Yes, when using a persistent VM. Windows and Linux keep the disk in the folder you chose during setup. Mac saves changes by default; disposable mode discards them when you close the app.',
+     ),
+   ],
+ ]
+@@ -171,7 +202,7 @@ export function TryPage() {
+             >
+               {t('A taste of Omarchy.')}
+               <br />
+-              {t('On your Mac or Windows PC.')}
++              {t('On your Mac, Windows or Linux PC.')}
+             </h1>
+             <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-text-secondary sm:text-base">
+               {t(
+@@ -203,7 +234,7 @@ export function TryPage() {
+             </div>
+             <p className="mt-4 text-xs leading-relaxed text-text-secondary">
+               {t('Free & open source')} · {t('Apple Silicon')} ·{' '}
+-              {t('Windows 10 & 11')}
++              {t('Windows 10 & 11')} · {t('Linux with KVM')}
+             </p>
+           </div>
+         </div>
+@@ -226,6 +257,10 @@ export function TryPage() {
+                 <WindowsIcon />
+                 {t('Windows')}
+               </TabsTrigger>
++              <TabsTrigger value="linux" className="px-4">
++                <LinuxIcon />
++                {t('Linux')}
++              </TabsTrigger>
+             </TabsList>
+           </div>
+           <TabsContent value="mac">
+@@ -278,6 +313,34 @@ export function TryPage() {
+               </figcaption>
+             </figure>
+           </TabsContent>
++          <TabsContent value="linux">
++            <figure>
++              <video
++                controls
++                playsInline
++                preload="none"
++                poster="/images/linux/desktop.jpg"
++                width="1280"
++                height="720"
++                className="aspect-[1280/803] w-full border border-border-subtle bg-bg-deep object-contain"
++                aria-label={t('Try Omarchy on Linux demonstration')}
++              >
++                <source src="/images/linux/demo.webm" type="video/webm" />
++                <a href="/images/linux/demo.webm">
++                  {t('Download the Linux demo')}
++                </a>
++              </video>
++              <figcaption className="mt-3 flex flex-wrap items-center justify-between gap-x-4 text-xs text-text-secondary">
++                <span>
++                  {t('Omarchy on Ubuntu. Your distro stays as it is.')}
++                </span>
++                <a className={link} href="/linux/">
++                  {t('Try Omarchy for Linux')}
++                  <ArrowUpRightIcon className="size-4" />
++                </a>
++              </figcaption>
++            </figure>
++          </TabsContent>
+         </Tabs>
+       </section>
+       <section className={section}>
+@@ -307,9 +370,9 @@ export function TryPage() {
+         <div className={wrap}>
+           <SectionHeading
+             title={t('Try Omarchy on your computer')}
+-            description={t('Download the app for your Mac or Windows PC.')}
++            description={t('Download the app for your Mac, Windows or Linux PC.')}
+           />
+-          <div className="mt-8 grid gap-5 md:grid-cols-2">
++          <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+             {platforms.map(
+               ({
+                 id,
+@@ -392,7 +455,7 @@ export function TryPage() {
+             title={t('Up and running.')}
+             description={t('Three steps to your Linux desktop.')}
+           />
+-          <div className="mt-9 grid gap-10 md:grid-cols-2">
++          <div className="mt-9 grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+             {platforms.map(
+               ({ id, icon: Icon, guideLabel, quickStart, guide }) => (
+                 <article

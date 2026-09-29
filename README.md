@@ -12,7 +12,18 @@ To rebuild with Node 24+ and Python 3:
 python3 scripts/export-omarchy.py
 ```
 
-An optional path to an existing source checkout reuses its installed dependencies. The exporter copies the pinned commit into a temporary build directory. It adjusts only the standalone entry point, metadata, and outbound navigation, then copies the static output and required assets. The source checkout is not modified.
+An optional path to an existing source checkout reuses its installed dependencies. The exporter copies the pinned commit into a temporary build directory. It adjusts only the standalone entry point, metadata, and outbound navigation, adds the Linux material from `source-overlay/`, then copies the static output and required assets. The source checkout is not modified.
+
+## Linux
+
+Linux is on tryomarchy.com only; the upstream proposal still covers Mac and Windows. `source-overlay/` holds it:
+
+- `try-page-linux.patch` adds Linux to the Try page: the hero, the preview tabs, a download card and a quick start. The export stops if the patch no longer applies to the pinned revision.
+- `src/astro/pages/LinuxPage.tsx` and `src/pages/linux.astro` build `/linux/`, with install steps for Software, Ubuntu and the terminal.
+- `src/components/icons/LinuxIcon.tsx` is Tux from Simple Icons (CC0).
+- `public/images/linux/` holds the demo video and poster from the [Linux repository](https://github.com/btsouth/try-omarchy-linux/tree/master/docs/images).
+
+`linux.flatpakref` is the installer every Linux link points to. It must match the `.flatpakref` in the latest Linux app release, which adds the update repository at `https://flatpak.tryomarchy.com/repo/`. `_headers` serves it with the Flatpak MIME type so browsers hand it to Software.
 
 The shared components and styles come directly from that source. Omarchy navigation and language links lead to the official site. Local download links stay on this page. The official site's analytics integration is omitted; Cloudflare injects its existing Web Analytics script independently.
 
@@ -32,4 +43,4 @@ Brand assets, theme previews, UI source, fonts, and ttfx engine are from the pin
 
 ## Downloads and migration
 
-Keep `/download`, `/TryOmarchy.exe`, and `/bootstrap.ps1` working. After the official `/try/` page is approved and live, redirect the landing page to `https://omarchy.org/try/`. Preserve executable and bootstrap routes. No landing-page redirect is enabled yet.
+Keep `/download`, `/TryOmarchy.exe`, `/bootstrap.ps1`, `/linux/`, and `/linux.flatpakref` working. After the official `/try/` page is approved and live, redirect the landing page to `https://omarchy.org/try/`. Preserve executable and bootstrap routes. No landing-page redirect is enabled yet.
