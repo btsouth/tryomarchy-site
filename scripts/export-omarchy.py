@@ -13,7 +13,7 @@ import sys
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
-REVISION = '5b94ee2af0cfd3654f8b962078ce9dec93bcd69d'
+REVISION = '0e2c5e3adf7769a0754501894a485cfbbbcec5e5'
 SOURCE = 'https://github.com/btsouth/omarchy-site.git'
 
 
@@ -86,6 +86,10 @@ import { TryLinuxPage } from '@/astro/pages/TryLinuxPage'
     edit(work / 'src/lib/hash-scroll.ts', "if (window.location.pathname === '/') {", "if (window.location.origin === 'https://omarchy.org' && window.location.pathname === '/') {")
     # Native <a> links outside the Link wrapper need their public destination.
     edit(work / 'src/components/SiteHeader.tsx', 'href="/news/rss.xml"', 'href="https://omarchy.org/news/rss.xml"')
+    # No language site has /linux/, so language links from it open that
+    # language's front page. Point them at /try/linux/ once #461 is live.
+    edit(work / 'src/components/SiteFooter.tsx', 'href={`${entry.domain}${currentPath}`}', "href={`${entry.domain}${currentPath === '/linux/' ? '/' : currentPath}`}")
+    edit(work / 'src/lib/menu.ts', 'hasTranslation(code, path) ? path + suffix', "hasTranslation(code, path) && path !== '/linux/' ? path + suffix")
     # TryPage and TryLinuxPage are the exact components proposed upstream,
     # with only the two link destinations above adapted.
     run('npm', 'run', 'build', cwd=work)
