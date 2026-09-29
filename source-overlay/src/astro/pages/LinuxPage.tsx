@@ -173,19 +173,13 @@ export function LinuxPage() {
       </section>
       <section className={`${wrap} pb-14 sm:pb-20`} aria-label="Product preview">
         <figure>
-          <video
-            controls
-            playsInline
-            preload="none"
-            poster="/images/linux/desktop.jpg"
+          <img
+            src="/images/linux/desktop.webp"
             width="1280"
-            height="720"
-            className="aspect-video w-full border border-border-subtle bg-bg-deep object-contain"
-            aria-label="Try Omarchy on Linux demonstration"
-          >
-            <source src="/images/linux/demo.webm" type="video/webm" />
-            <a href="/images/linux/demo.webm">Download the Linux demo</a>
-          </video>
+            height="800"
+            className="aspect-[1280/800] w-full border border-border-subtle bg-bg-deep object-contain"
+            alt="Try Omarchy in a window on Ubuntu, showing the Omarchy desktop."
+          />
           <figcaption className="mt-3 text-xs text-text-secondary">
             Omarchy running in Try Omarchy on Ubuntu.
           </figcaption>

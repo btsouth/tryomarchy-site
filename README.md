@@ -21,7 +21,7 @@ Linux is on tryomarchy.com only; the upstream proposal still covers Mac and Wind
 - `try-page-linux.patch` adds Linux to the Try page: the hero, the preview tabs, a download card and a quick start. The export stops if the patch no longer applies to the pinned revision.
 - `src/astro/pages/LinuxPage.tsx` and `src/pages/linux.astro` build `/linux/`, with install steps for Software, Ubuntu and the terminal.
 - `src/components/icons/LinuxIcon.tsx` is Tux from Simple Icons (CC0).
-- `public/images/linux/` holds the demo video and poster from the [Linux repository](https://github.com/btsouth/try-omarchy-linux/tree/master/docs/images).
+- `public/images/linux/desktop.webp` is Try Omarchy on Ubuntu 24.04, captured from a test VM running Linux preview 3 on September 29. `public/images/try/windows-desktop.webp` is a frame of the Windows demo video (`images/try/windows.mp4`), which the Try page shows instead of the video.
 
 `linux.flatpakref` is the installer every Linux link points to. It must match the `.flatpakref` in the latest Linux app release, which adds the update repository at `https://flatpak.tryomarchy.com/repo/`. `_headers` serves it with the Flatpak MIME type so browsers hand it to Software.
 

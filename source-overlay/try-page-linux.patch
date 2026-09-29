@@ -1,5 +1,5 @@
 diff --git i/src/astro/pages/TryPage.tsx w/src/astro/pages/TryPage.tsx
-index 8532fd5..e3951ff 100644
+index 8532fd5..bb49ee0 100644
 --- i/src/astro/pages/TryPage.tsx
 +++ w/src/astro/pages/TryPage.tsx
 @@ -11,11 +11,13 @@ import {
@@ -122,27 +122,49 @@ index 8532fd5..e3951ff 100644
              </TabsList>
            </div>
            <TabsContent value="mac">
-@@ -278,6 +313,34 @@ export function TryPage() {
+@@ -252,21 +287,15 @@ export function TryPage() {
+           </TabsContent>
+           <TabsContent value="windows">
+             <figure>
+-              <video
+-                controls
+-                playsInline
+-                preload="none"
+-                poster="/images/try/windows.webp"
++              <img
++                src="/images/try/windows-desktop.webp"
+                 width="1366"
+                 height="768"
+                 className="aspect-[1280/803] w-full border border-border-subtle bg-bg-deep object-contain"
+-                aria-label={t('Try Omarchy on Windows demonstration')}
+-              >
+-                <source src="/images/try/windows.mp4" type="video/mp4" />
+-                <a href="/images/try/windows.mp4">
+-                  {t('Download the Windows demo')}
+-                </a>
+-              </video>
++                alt={t(
++                  'Try Omarchy on Windows 11, with btop and omarchy.org tiled side by side.',
++                )}
++              />
+               <figcaption className="mt-3 flex flex-wrap items-center justify-between gap-x-4 text-xs text-text-secondary">
+                 <span>
+                   {t('Omarchy on Windows. Your Windows setup stays in place.')}
+@@ -278,6 +307,28 @@ export function TryPage() {
                </figcaption>
              </figure>
            </TabsContent>
 +          <TabsContent value="linux">
 +            <figure>
-+              <video
-+                controls
-+                playsInline
-+                preload="none"
-+                poster="/images/linux/desktop.jpg"
++              <img
++                src="/images/linux/desktop.webp"
 +                width="1280"
-+                height="720"
++                height="800"
 +                className="aspect-[1280/803] w-full border border-border-subtle bg-bg-deep object-contain"
-+                aria-label={t('Try Omarchy on Linux demonstration')}
-+              >
-+                <source src="/images/linux/demo.webm" type="video/webm" />
-+                <a href="/images/linux/demo.webm">
-+                  {t('Download the Linux demo')}
-+                </a>
-+              </video>
++                alt={t(
++                  'Try Omarchy in a window on Ubuntu, showing the Omarchy desktop.',
++                )}
++              />
 +              <figcaption className="mt-3 flex flex-wrap items-center justify-between gap-x-4 text-xs text-text-secondary">
 +                <span>
 +                  {t('Omarchy on Ubuntu. Your distro stays as it is.')}
@@ -157,7 +179,7 @@ index 8532fd5..e3951ff 100644
          </Tabs>
        </section>
        <section className={section}>
-@@ -307,9 +370,9 @@ export function TryPage() {
+@@ -307,9 +358,9 @@ export function TryPage() {
          <div className={wrap}>
            <SectionHeading
              title={t('Try Omarchy on your computer')}
@@ -169,7 +191,7 @@ index 8532fd5..e3951ff 100644
              {platforms.map(
                ({
                  id,
-@@ -392,7 +455,7 @@ export function TryPage() {
+@@ -392,7 +443,7 @@ export function TryPage() {
              title={t('Up and running.')}
              description={t('Three steps to your Linux desktop.')}
            />
