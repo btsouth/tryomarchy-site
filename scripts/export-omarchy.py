@@ -13,7 +13,7 @@ import sys
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
-REVISION = '1ae12b8966bb8481acb0770d652ac4c2568dd8ca'
+REVISION = '4a0cd8d7811d6c68130442d2aeb3622016aa667a'
 SOURCE = 'https://github.com/btsouth/omarchy-site.git'
 
 
