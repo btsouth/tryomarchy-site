@@ -1,3 +1,7 @@
 /download https://github.com/omacom/try-omarchy-windows/releases/latest/download/TryOmarchy.exe 302
 /TryOmarchy.exe https://github.com/omacom/try-omarchy-windows/releases/latest/download/TryOmarchy.exe 302
 /bootstrap.ps1 https://raw.githubusercontent.com/omacom/try-omarchy-windows/master/scripts/bootstrap.ps1 302
+/try / 301
+/try/ / 301
+/try/linux /linux/ 301
+/try/linux/ /linux/ 301

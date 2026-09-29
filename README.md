@@ -12,18 +12,13 @@ To rebuild with Node 24+ and Python 3:
 python3 scripts/export-omarchy.py
 ```
 
-An optional path to an existing source checkout reuses its installed dependencies. The exporter copies the pinned commit into a temporary build directory. It adjusts only the standalone entry point, metadata, and outbound navigation, adds the Linux material from `source-overlay/`, then copies the static output and required assets. The source checkout is not modified.
+An optional path to an existing source checkout reuses its installed dependencies. The exporter copies the pinned commit into a temporary build directory. It adjusts only the standalone entry points, metadata, and outbound navigation, then copies the static output and required assets. The source checkout is not modified.
 
 ## Linux
 
-Linux is on tryomarchy.com only; the upstream proposal still covers Mac and Windows. `source-overlay/` holds it:
+Linux is part of the upstream proposal. Its `TryPage` covers Mac, Windows and Linux, and `TryLinuxPage` is the Linux setup page, served upstream at `/try/linux/`. The exporter builds `TryLinuxPage` at `/linux/` here, the address the launch posts and the installer's homepage use, and points the two links between the pages at `/` and `/linux/`. `_redirects` sends `/try/` and `/try/linux/` to the same pages.
 
-- `try-page-linux.patch` adds Linux to the Try page: the hero, the preview tabs, a download card and a quick start. The export stops if the patch no longer applies to the pinned revision.
-- `src/astro/pages/LinuxPage.tsx` and `src/pages/linux.astro` build `/linux/`, with install steps for Software, Ubuntu and the terminal.
-- `src/components/icons/LinuxIcon.tsx` is Tux from Simple Icons (CC0).
-- `public/images/linux/desktop.webp` is Try Omarchy on Ubuntu 24.04, captured from a test VM running Linux preview 3 on September 29. `public/images/try/windows-desktop.webp` is a frame of the Windows demo video (`images/try/windows.mp4`), which the Try page shows instead of the video.
-
-`linux.flatpakref` is the installer every Linux link points to. It must match the `.flatpakref` in the latest Linux app release, which adds the update repository at `https://flatpak.tryomarchy.com/repo/`. `_headers` serves it with the Flatpak MIME type so browsers hand it to Software.
+`linux.flatpakref` is the installer every Linux link points to, on this site and in the upstream proposal. It must match the `.flatpakref` in the latest Linux app release, which adds the update repository at `https://flatpak.tryomarchy.com/repo/`. `_headers` serves it with the Flatpak MIME type so browsers hand it to Software.
 
 The shared components and styles come directly from that source. Omarchy navigation and language links lead to the official site. Local download links stay on this page. The official site's analytics integration is omitted; Cloudflare injects its existing Web Analytics script independently.
 
@@ -37,10 +32,10 @@ Check desktop and mobile layouts, the theme picker, search, footer, and animated
 
 ## Media and attribution
 
-Mac screenshot: https://github.com/user-attachments/assets/1368a8f5-5099-43e4-8d3b-3d7d7fba0326 from the [Mac README](https://github.com/omacom/try-omarchy). Windows screenshot and video are the existing website captures. Captured app versions are unknown. A maintainer-provided Mac recording can replace the still later.
+Mac screenshot: https://github.com/user-attachments/assets/1368a8f5-5099-43e4-8d3b-3d7d7fba0326 from the [Mac README](https://github.com/omacom/try-omarchy). The Windows still is a frame of the Windows 11 laptop recording, and the Linux still is Ubuntu 24.04 running Linux preview 3; `docs/try-media.md` in the source has the capture details. The Mac and Windows app versions are unknown. A maintainer-provided Mac recording can replace the still later.
 
 Brand assets, theme previews, UI source, fonts, and ttfx engine are from the pinned Omarchy site. The Omarchy brand remains subject to its trademark rights. The optional music track is “We Can Fix Everything (The Ultimate Machine)” by Kevin Koontz, credited in the shared music control. Font license notices remain in `fonts/OFL.txt`.
 
 ## Downloads and migration
 
-Keep `/download`, `/TryOmarchy.exe`, `/bootstrap.ps1`, `/linux/`, and `/linux.flatpakref` working. After the official `/try/` page is approved and live, redirect the landing page to `https://omarchy.org/try/`. Preserve executable and bootstrap routes. No landing-page redirect is enabled yet.
+Keep `/download`, `/TryOmarchy.exe`, `/bootstrap.ps1`, `/linux/`, and `/linux.flatpakref` working. After the official `/try/` page is approved and live, redirect the landing page to `https://omarchy.org/try/` and `/linux/` to `https://omarchy.org/try/linux/`. Keep serving `/linux.flatpakref` here, since the official page links to it, and preserve the executable and bootstrap routes. No landing-page redirect is enabled yet.

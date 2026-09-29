@@ -13,7 +13,7 @@ import sys
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
-REVISION = '67acf3b5ce399539ad0172c8f407926d61905b5c'
+REVISION = '068024713f60de956ae1fe7ab048ceb414967db3'
 SOURCE = 'https://github.com/btsouth/omarchy-site.git'
 
 
@@ -45,14 +45,6 @@ with tempfile.TemporaryDirectory(prefix='tryomarchy-native-') as temp:
     else:
         run('npm', 'ci', cwd=work)
 
-    # Linux is on tryomarchy.com only: the overlay adds the /linux/ page and its
-    # media, and the patch adds Linux to the proposal's Try page.
-    overlay = ROOT / 'source-overlay'
-    for tree in ['src', 'public']:
-        shutil.copytree(overlay / tree, work / tree, dirs_exist_ok=True)
-    run('patch', '-p1', '--forward', '--batch', '--no-backup-if-mismatch',
-        '-i', str(overlay / 'try-page-linux.patch'), cwd=work)
-
     # Only hosting/navigation changes. Shared header, footer, shaders, theme
     # picker, styles, icons, and fonts are reused, with only link destinations adapted.
     (work / 'src/pages/index.astro').write_text('''---
@@ -63,6 +55,18 @@ import { TryPage } from '@/astro/pages/TryPage'
   <TryPage client:load />
 </Base>
 ''')
+    # The proposal serves Linux setup at /try/linux/; here it is /linux/, the
+    # address the launch posts and the installer's homepage already use.
+    (work / 'src/pages/linux.astro').write_text('''---
+import Base from '../layouts/Base.astro'
+import { TryLinuxPage } from '@/astro/pages/TryLinuxPage'
+---
+<Base title="Try Omarchy for Linux" description="Run the Omarchy desktop in a window on your Linux PC. A Flatpak app with guided setup and automatic updates, without replacing your distro." path="/linux/">
+  <TryLinuxPage client:load />
+</Base>
+''')
+    edit(work / 'src/astro/pages/TryPage.tsx', "guide: '/try/linux/'", "guide: '/linux/'")
+    edit(work / 'src/astro/pages/TryLinuxPage.tsx', 'href="/try/"', 'href="/"')
     base = work / 'src/layouts/Base.astro'
     edit(base, "import { ClientRouter } from 'astro:transitions'", '')
     edit(base, '<ClientRouter fallback="swap" />', '')
@@ -82,8 +86,8 @@ import { TryPage } from '@/astro/pages/TryPage'
     edit(work / 'src/lib/hash-scroll.ts', "if (window.location.pathname === '/') {", "if (window.location.origin === 'https://omarchy.org' && window.location.pathname === '/') {")
     # Native <a> links outside the Link wrapper need their public destination.
     edit(work / 'src/components/SiteHeader.tsx', 'href="/news/rss.xml"', 'href="https://omarchy.org/news/rss.xml"')
-    # Apart from the Linux patch above, TryPage is the exact component
-    # proposed upstream, not a standalone variant.
+    # TryPage and TryLinuxPage are the exact components proposed upstream,
+    # with only the two link destinations above adapted.
     run('npm', 'run', 'build', cwd=work)
     built = work / 'dist/client'
     # Keep these checks close to the exporter: missing WASM was the easiest
@@ -92,7 +96,7 @@ import { TryPage } from '@/astro/pages/TryPage'
                      'music/kevin_koontz-we_can_fix_everything.mp3',
                      'data/search-index.json']:
         assert (built / required).is_file(), required
-    for directory in ['_astro', 'ttfx', 'music', 'images/try', 'images/linux', 'assets/images/theme-previews']:
+    for directory in ['_astro', 'ttfx', 'music', 'images/try', 'assets/images/theme-previews']:
         dest = ROOT / directory
         if dest.exists():
             shutil.rmtree(dest)
