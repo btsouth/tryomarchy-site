@@ -45,7 +45,7 @@ with tempfile.TemporaryDirectory(prefix='tryomarchy-native-') as temp:
     else:
         run('npm', 'ci', cwd=work)
 
-    # Hosting/navigation changes and current Linux preview limits. Shared header, footer, shaders, theme
+    # Hosting/navigation changes and current Linux app wording. Shared header, footer, shaders, theme
     # picker, styles, icons, and fonts are reused, with only link destinations adapted.
     (work / 'src/pages/index.astro').write_text('''---
 import Base from '../layouts/Base.astro'
@@ -67,9 +67,29 @@ import { TryLinuxPage } from '@/astro/pages/TryLinuxPage'
 ''')
     edit(work / 'src/astro/pages/TryPage.tsx', "guide: '/try/linux/'", "guide: '/linux/'")
     edit(work / 'src/astro/pages/TryLinuxPage.tsx', 'href="/try/"', 'href="/"')
-    edit(work / 'src/astro/pages/TryLinuxPage.tsx',
-         'The app is a preview. Omarchy inside it is the regular desktop. Core use, files, backups and recovery work. Camera, live audio switching, gestures, USB passthrough and bridged networking are not in this release yet. Reports from real hardware help.',
-         'The app is a preview. Omarchy inside it is the regular desktop. Core use, files, backups and recovery work. Preview 5 adds live audio switching and camera access through your desktop permission prompt. Gestures, USB passthrough and bridged networking are not in this release yet. Reports from real hardware help.')
+    linux = work / 'src/astro/pages/TryLinuxPage.tsx'
+    edit(linux, """    t('Is it finished?'),
+    <>
+      {t(
+        'The app is a preview. Omarchy inside it is the regular desktop. Core use, files, backups and recovery work. Camera, live audio switching, gestures, USB passthrough and bridged networking are not in this release yet. Reports from real hardware help.',
+      )}{' '}
+      <a className={inlineLink} href={TESTING}>
+        {t('See the hardware testing checklist.')}
+      </a>
+    </>,""", """    t('What works on Linux?'),
+    t(
+      'Omarchy inside it is the regular desktop. Setup, files, backups and recovery, live audio switching, camera access and port forwarding all work. Gestures, USB passthrough and bridged networking are not in the Linux app yet.',
+    ),""")
+    edit(linux, " · Flatpak · {t('Preview')}", ' · Flatpak')
+    edit(work / 'src/astro/pages/TryPage.tsx', "t('x86_64 · KVM · Flatpak · Preview')", "t('x86_64 · KVM · Flatpak')")
+    # The launcher's account choices and location button were renamed in 0.1.0.
+    edit(linux, 'choose Set up Omarchy, then Set up my own account.', 'choose Set up Omarchy, then My own username and password.')
+    edit(linux, 'Choose Quick start as omarchy instead.', 'Choose Quick start instead.')
+    edit(linux, 'Customize lets you pick where to store Omarchy first.', 'Choose location lets you pick where to store Omarchy first.')
+    edit(linux, 'Set up my own account, or Quick start as omarchy.', 'My own username and password, or Quick start.')
+    edit(work / 'src/astro/pages/TryPage.tsx',
+         'Set up my own account lets you pick your username and password, or Quick start as omarchy skips that.',
+         'Pick My own username and password, or Quick start to skip account setup.')
     base = work / 'src/layouts/Base.astro'
     edit(base, "import { ClientRouter } from 'astro:transitions'", '')
     edit(base, '<ClientRouter fallback="swap" />', '')
@@ -94,7 +114,7 @@ import { TryLinuxPage } from '@/astro/pages/TryLinuxPage'
     edit(work / 'src/components/SiteFooter.tsx', 'href={`${entry.domain}${currentPath}`}', "href={`${entry.domain}${currentPath === '/linux/' ? '/' : currentPath}`}")
     edit(work / 'src/lib/menu.ts', 'hasTranslation(code, path) ? path + suffix', "hasTranslation(code, path) && path !== '/linux/' ? path + suffix")
     # TryPage and TryLinuxPage are the exact components proposed upstream,
-    # with link destinations and Linux preview limits adapted above.
+    # with link destinations and Linux app wording adapted above.
     run('npm', 'run', 'build', cwd=work)
     built = work / 'dist/client'
     # Keep these checks close to the exporter: missing WASM was the easiest
