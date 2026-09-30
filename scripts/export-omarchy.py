@@ -45,7 +45,7 @@ with tempfile.TemporaryDirectory(prefix='tryomarchy-native-') as temp:
     else:
         run('npm', 'ci', cwd=work)
 
-    # Only hosting/navigation changes. Shared header, footer, shaders, theme
+    # Hosting/navigation changes and current Linux preview limits. Shared header, footer, shaders, theme
     # picker, styles, icons, and fonts are reused, with only link destinations adapted.
     (work / 'src/pages/index.astro').write_text('''---
 import Base from '../layouts/Base.astro'
@@ -67,6 +67,9 @@ import { TryLinuxPage } from '@/astro/pages/TryLinuxPage'
 ''')
     edit(work / 'src/astro/pages/TryPage.tsx', "guide: '/try/linux/'", "guide: '/linux/'")
     edit(work / 'src/astro/pages/TryLinuxPage.tsx', 'href="/try/"', 'href="/"')
+    edit(work / 'src/astro/pages/TryLinuxPage.tsx',
+         'The app is a preview. Omarchy inside it is the regular desktop. Core use, files, backups and recovery work. Camera, live audio switching, gestures, USB passthrough and bridged networking are not in this release yet. Reports from real hardware help.',
+         'The app is a preview. Omarchy inside it is the regular desktop. Core use, files, backups and recovery work. Preview 5 adds live audio switching and camera access through your desktop permission prompt. Gestures, USB passthrough and bridged networking are not in this release yet. Reports from real hardware help.')
     base = work / 'src/layouts/Base.astro'
     edit(base, "import { ClientRouter } from 'astro:transitions'", '')
     edit(base, '<ClientRouter fallback="swap" />', '')
@@ -91,7 +94,7 @@ import { TryLinuxPage } from '@/astro/pages/TryLinuxPage'
     edit(work / 'src/components/SiteFooter.tsx', 'href={`${entry.domain}${currentPath}`}', "href={`${entry.domain}${currentPath === '/linux/' ? '/' : currentPath}`}")
     edit(work / 'src/lib/menu.ts', 'hasTranslation(code, path) ? path + suffix', "hasTranslation(code, path) && path !== '/linux/' ? path + suffix")
     # TryPage and TryLinuxPage are the exact components proposed upstream,
-    # with only the two link destinations above adapted.
+    # with link destinations and Linux preview limits adapted above.
     run('npm', 'run', 'build', cwd=work)
     built = work / 'dist/client'
     # Keep these checks close to the exporter: missing WASM was the easiest
