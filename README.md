@@ -22,7 +22,7 @@ Linux is part of the upstream proposal. Its `TryPage` covers Mac, Windows and Li
 
 The shared components and styles come directly from that source. Omarchy navigation and language links lead to the official site. Local download links stay on this page. The official site's analytics integration is omitted; Cloudflare injects its existing Web Analytics script independently.
 
-The exporter updates the Linux preview limits to match the published app release.
+The exporter updates the Linux FAQ, requirement badges and launcher button names to match the published app release.
 
 ## Deployment
 
