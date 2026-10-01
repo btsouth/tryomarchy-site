@@ -40,4 +40,8 @@ Brand assets, theme previews, UI source, fonts, and ttfx engine are from the pin
 
 ## Downloads and migration
 
+`/import` redirects to the latest Windows release's importer bootstrap, so the
+launcher can show `curl -fsSL https://tryomarchy.com/import | bash`. Preserve
+this route alongside the download and bootstrap routes.
+
 Keep `/download`, `/TryOmarchy.exe`, `/bootstrap.ps1`, `/linux/`, and `/linux.flatpakref` working. After the official `/try/` page is approved and live, redirect the landing page to `https://omarchy.org/try/` and `/linux/` to `https://omarchy.org/try/linux/`. Keep serving `/linux.flatpakref` here, since the official page links to it, and preserve the executable and bootstrap routes. No landing-page redirect is enabled yet.
