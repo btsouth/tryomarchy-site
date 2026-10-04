@@ -94,7 +94,7 @@ import { TryLinuxPage } from '@/astro/pages/TryLinuxPage'
     edit(base, "import { ClientRouter } from 'astro:transitions'", '')
     edit(base, '<ClientRouter fallback="swap" />', '')
     edit(base, 'const url = `${SITE_URL}${path}`', "const url = `https://tryomarchy.com${path}`")
-    edit(base, 'const ogImage = socialImage(path)', "const ogImage = { url: 'https://tryomarchy.com/og.png', width: '1200', height: '630', alt: 'Try Omarchy on Mac, Windows and Linux' }")
+    edit(base, 'const ogImage = socialImage(path)', "const ogImage = { url: 'https://tryomarchy.com/og.png?v=2', width: '1200', height: '630', alt: 'Try Omarchy on Mac, Windows and Linux' }")
     text = base.read_text()
     text = re.sub(r'\s*<script is:inline defer data-domain="omarchy.org"[^>]+/>', '', text)
     text = re.sub(r'\s*\{Object.entries\(locales\).*?\)\)\}', '', text, flags=re.S)
