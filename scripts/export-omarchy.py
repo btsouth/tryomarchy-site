@@ -45,7 +45,7 @@ with tempfile.TemporaryDirectory(prefix='tryomarchy-native-') as temp:
     else:
         run('npm', 'ci', cwd=work)
 
-    # Hosting/navigation changes and current Linux app wording. Shared header, footer, shaders, theme
+    # Hosting/navigation changes and current app downloads/wording. Shared header, footer, shaders, theme
     # picker, styles, icons, and fonts are reused, with only link destinations adapted.
     (work / 'src/pages/index.astro').write_text('''---
 import Base from '../layouts/Base.astro'
@@ -66,6 +66,24 @@ import { TryLinuxPage } from '@/astro/pages/TryLinuxPage'
 </Base>
 ''')
     edit(work / 'src/astro/pages/TryPage.tsx', "guide: '/try/linux/'", "guide: '/linux/'")
+    # Resolve the latest Mac asset in the browser: numbered DMGs no longer
+    # have the old releases/latest/download/TryOmarchy.dmg URL. Keep the
+    # release page usable before hydration and if GitHub's API is unavailable.
+    shutil.copyfile(ROOT / 'scripts/try-mac.ts', work / 'src/lib/try-mac.ts')
+    mac = work / 'src/astro/pages/TryPage.tsx'
+    edit(mac, "import { useState } from 'react'", "import { useEffect, useState } from 'react'\nimport { latestMacDownload, MAC_RELEASES } from '@/lib/try-mac'")
+    edit(mac, 'download: `${MAC}/releases/latest/download/TryOmarchy.dmg`,', 'download: MAC_RELEASES,')
+    edit(mac, 'Download TryOmarchy.dmg and open it.', 'Download the Try Omarchy DMG and open it.')
+    edit(mac, '  const [painted, setPainted] = useState(false)', '''  const [painted, setPainted] = useState(false)
+  const [macDownload, setMacDownload] = useState(MAC_RELEASES)
+  useEffect(() => {
+    const controller = new AbortController()
+    latestMacDownload(controller.signal).then((url) => {
+      if (!controller.signal.aborted) setMacDownload(url)
+    })
+    return () => controller.abort()
+  }, [])''')
+    edit(mac, 'render={<a href={download} />}', "render={<a href={id === 'mac' ? macDownload : download} />}")
     edit(work / 'src/astro/pages/TryLinuxPage.tsx', 'href="/try/"', 'href="/"')
     linux = work / 'src/astro/pages/TryLinuxPage.tsx'
     edit(linux, """    t('Is it finished?'),
@@ -114,7 +132,7 @@ import { TryLinuxPage } from '@/astro/pages/TryLinuxPage'
     edit(work / 'src/components/SiteFooter.tsx', 'href={`${entry.domain}${currentPath}`}', "href={`${entry.domain}${currentPath === '/linux/' ? '/' : currentPath}`}")
     edit(work / 'src/lib/menu.ts', 'hasTranslation(code, path) ? path + suffix', "hasTranslation(code, path) && path !== '/linux/' ? path + suffix")
     # TryPage and TryLinuxPage are the exact components proposed upstream,
-    # with link destinations and Linux app wording adapted above.
+    # with link destinations, Mac downloads and Linux app wording adapted above.
     run('npm', 'run', 'build', cwd=work)
     built = work / 'dist/client'
     # Keep these checks close to the exporter: missing WASM was the easiest

@@ -24,6 +24,18 @@ The shared components and styles come directly from that source. Omarchy navigat
 
 The exporter updates the Linux FAQ, requirement badges and launcher button names to match the published app release.
 
+## Mac downloads
+
+The Mac download button looks up the latest release of `omacom/try-omarchy`
+through GitHub's public API. It prefers `TryOmarchy-<tag>.dmg` (for example,
+`TryOmarchy-v0.5.0.dmg`) and accepts the legacy `TryOmarchy.dmg` filename.
+New numbered releases work without rebuilding the site. Before JavaScript
+loads, or if the API fails or has no matching DMG, the button opens the latest
+release page instead. The resolver lives in `scripts/try-mac.ts`; the exporter
+copies it into the pinned source before building.
+
+Run its regression tests with `node --test scripts/try-mac.test.ts` (Node 24+).
+
 ## Deployment
 
 Cloudflare Pages project `tryomarchy`, connected to `btsouth/tryomarchy-site` on `main`. A push to main deploys to https://tryomarchy.com and www. No server runtime or Cloudflare build step is required.
