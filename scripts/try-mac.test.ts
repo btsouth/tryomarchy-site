@@ -94,3 +94,18 @@ test('resolves the API download and falls back on lookup failures', async (t) =>
   })
   assert.equal(await latestMacDownload(), MAC_RELEASES)
 })
+
+test('falls back when the download lookup is aborted', async (t) => {
+  const signal = AbortSignal.abort(
+    new DOMException('Timed out', 'TimeoutError'),
+  )
+  t.mock.method(
+    globalThis,
+    'fetch',
+    async (_url: RequestInfo | URL, options?: RequestInit) => {
+      options?.signal?.throwIfAborted()
+      throw new Error('Expected an aborted signal')
+    },
+  )
+  assert.equal(await latestMacDownload(signal), MAC_RELEASES)
+})

@@ -70,20 +70,32 @@ import { TryLinuxPage } from '@/astro/pages/TryLinuxPage'
     # have the old releases/latest/download/TryOmarchy.dmg URL. Keep the
     # release page usable before hydration and if GitHub's API is unavailable.
     shutil.copyfile(ROOT / 'scripts/try-mac.ts', work / 'src/lib/try-mac.ts')
+    shutil.copyfile(ROOT / 'scripts/try-mac-button.tsx', work / 'src/lib/try-mac-button.tsx')
     mac = work / 'src/astro/pages/TryPage.tsx'
-    edit(mac, "import { useState } from 'react'", "import { useEffect, useState } from 'react'\nimport { latestMacDownload, MAC_RELEASES } from '@/lib/try-mac'")
+    edit(mac, "import { useState } from 'react'", "import { useState } from 'react'\nimport { MAC_RELEASES } from '@/lib/try-mac'\nimport { MacDownloadButton } from '@/lib/try-mac-button'")
     edit(mac, 'download: `${MAC}/releases/latest/download/TryOmarchy.dmg`,', 'download: MAC_RELEASES,')
     edit(mac, 'Download TryOmarchy.dmg and open it.', 'Download the Try Omarchy DMG and open it.')
-    edit(mac, '  const [painted, setPainted] = useState(false)', '''  const [painted, setPainted] = useState(false)
-  const [macDownload, setMacDownload] = useState(MAC_RELEASES)
-  useEffect(() => {
-    const controller = new AbortController()
-    latestMacDownload(controller.signal).then((url) => {
-      if (!controller.signal.aborted) setMacDownload(url)
-    })
-    return () => controller.abort()
-  }, [])''')
-    edit(mac, 'render={<a href={download} />}', "render={<a href={id === 'mac' ? macDownload : download} />}")
+    edit(mac, '''                  <Button
+                    nativeButton={false}
+                    render={<a href={download} />}
+                    className="mt-auto w-full"
+                    size="lg"
+                  >
+                    <DownloadIcon />
+                    {label}
+                  </Button>''', '''                  {id === 'mac' ? (
+                    <MacDownloadButton />
+                  ) : (
+                    <Button
+                      nativeButton={false}
+                      render={<a href={download} />}
+                      className="mt-auto w-full"
+                      size="lg"
+                    >
+                      <DownloadIcon />
+                      {label}
+                    </Button>
+                  )}''')
     edit(work / 'src/astro/pages/TryLinuxPage.tsx', 'href="/try/"', 'href="/"')
     linux = work / 'src/astro/pages/TryLinuxPage.tsx'
     edit(linux, """    t('Is it finished?'),
