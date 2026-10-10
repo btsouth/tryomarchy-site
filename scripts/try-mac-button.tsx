@@ -27,6 +27,9 @@ export function MacDownloadButton() {
       // A stalled lookup should still lead to the release page.
       const url = await latestMacDownload(AbortSignal.timeout(8000))
       window.location.assign(url)
+    } catch {
+      // Browsers without AbortSignal.timeout still reach the release page.
+      window.location.assign(MAC_RELEASES)
     } finally {
       pending.current = false
       setLoading(false)
@@ -41,7 +44,6 @@ export function MacDownloadButton() {
       size="lg"
       disabled={loading}
       aria-busy={loading}
-      aria-label={loading ? t('Finding download…') : t('Download for Mac')}
     >
       {loading ? (
         <span
