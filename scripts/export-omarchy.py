@@ -13,7 +13,7 @@ import sys
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
-REVISION = '2f3c30c080c0a629a30747a85fd187cdc63a30da'
+REVISION = '1e5a03b9aa5ff60dbb827a5db2ce24ae75787e82'
 SOURCE = 'https://github.com/btsouth/omarchy-site.git'
 
 
@@ -45,7 +45,7 @@ with tempfile.TemporaryDirectory(prefix='tryomarchy-native-') as temp:
     else:
         run('npm', 'ci', cwd=work)
 
-    # Hosting/navigation changes and current app downloads/wording. Shared header, footer, shaders, theme
+    # Hosting and navigation changes only. Shared header, footer, shaders, theme
     # picker, styles, icons, and fonts are reused, with only link destinations adapted.
     (work / 'src/pages/index.astro').write_text('''---
 import Base from '../layouts/Base.astro'
@@ -66,60 +66,7 @@ import { TryLinuxPage } from '@/astro/pages/TryLinuxPage'
 </Base>
 ''')
     edit(work / 'src/astro/pages/TryPage.tsx', "guide: '/try/linux/'", "guide: '/linux/'")
-    # Resolve the latest Mac asset in the browser: numbered DMGs no longer
-    # have the old releases/latest/download/TryOmarchy.dmg URL. Keep the
-    # release page usable before hydration and if GitHub's API is unavailable.
-    shutil.copyfile(ROOT / 'scripts/try-mac.ts', work / 'src/lib/try-mac.ts')
-    shutil.copyfile(ROOT / 'scripts/try-mac-button.tsx', work / 'src/lib/try-mac-button.tsx')
-    mac = work / 'src/astro/pages/TryPage.tsx'
-    edit(mac, "import { useState } from 'react'", "import { useState } from 'react'\nimport { MAC_RELEASES } from '@/lib/try-mac'\nimport { MacDownloadButton } from '@/lib/try-mac-button'")
-    edit(mac, 'download: `${MAC}/releases/latest/download/TryOmarchy.dmg`,', 'download: MAC_RELEASES,')
-    edit(mac, 'Download TryOmarchy.dmg and open it.', 'Download the Try Omarchy DMG and open it.')
-    edit(mac, '''                  <Button
-                    nativeButton={false}
-                    render={<a href={download} />}
-                    className="mt-auto w-full"
-                    size="lg"
-                  >
-                    <DownloadIcon />
-                    {label}
-                  </Button>''', '''                  {id === 'mac' ? (
-                    <MacDownloadButton />
-                  ) : (
-                    <Button
-                      nativeButton={false}
-                      render={<a href={download} />}
-                      className="mt-auto w-full"
-                      size="lg"
-                    >
-                      <DownloadIcon />
-                      {label}
-                    </Button>
-                  )}''')
     edit(work / 'src/astro/pages/TryLinuxPage.tsx', 'href="/try/"', 'href="/"')
-    linux = work / 'src/astro/pages/TryLinuxPage.tsx'
-    edit(linux, """    t('Is it finished?'),
-    <>
-      {t(
-        'The app is a preview. Omarchy inside it is the regular desktop. Core use, files, backups and recovery work. Camera, live audio switching, gestures, USB passthrough and bridged networking are not in this release yet. Reports from real hardware help.',
-      )}{' '}
-      <a className={inlineLink} href={TESTING}>
-        {t('See the hardware testing checklist.')}
-      </a>
-    </>,""", """    t('What works on Linux?'),
-    t(
-      'Omarchy inside it is the regular desktop. Setup, files, backups and recovery, live audio switching, camera access and port forwarding all work. Gestures, USB passthrough and bridged networking are not in the Linux app yet.',
-    ),""")
-    edit(linux, " · Flatpak · {t('Preview')}", ' · Flatpak')
-    edit(work / 'src/astro/pages/TryPage.tsx', "t('x86_64 · KVM · Flatpak · Preview')", "t('x86_64 · KVM · Flatpak')")
-    # The launcher's account choices and location button were renamed in 0.1.0.
-    edit(linux, 'choose Set up Omarchy, then Set up my own account.', 'choose Set up Omarchy, then My own username and password.')
-    edit(linux, 'Choose Quick start as omarchy instead.', 'Choose Quick start instead.')
-    edit(linux, 'Customize lets you pick where to store Omarchy first.', 'Choose location lets you pick where to store Omarchy first.')
-    edit(linux, 'Set up my own account, or Quick start as omarchy.', 'My own username and password, or Quick start.')
-    edit(work / 'src/astro/pages/TryPage.tsx',
-         'Set up my own account lets you pick your username and password, or Quick start as omarchy skips that.',
-         'Pick My own username and password, or Quick start to skip account setup.')
     base = work / 'src/layouts/Base.astro'
     edit(base, "import { ClientRouter } from 'astro:transitions'", '')
     edit(base, '<ClientRouter fallback="swap" />', '')
@@ -141,10 +88,9 @@ import { TryLinuxPage } from '@/astro/pages/TryLinuxPage'
     edit(work / 'src/components/SiteHeader.tsx', 'href="/news/rss.xml"', 'href="https://omarchy.org/news/rss.xml"')
     # No language site has /linux/, so language links from it open that
     # language's front page. Point them at /try/linux/ once #461 is live.
-    edit(work / 'src/components/SiteFooter.tsx', 'href={`${entry.domain}${currentPath}`}', "href={`${entry.domain}${currentPath === '/linux/' ? '/' : currentPath}`}")
-    edit(work / 'src/lib/menu.ts', 'hasTranslation(code, path) ? path + suffix', "hasTranslation(code, path) && path !== '/linux/' ? path + suffix")
+    edit(work / 'src/i18n/site.ts', 'hasTranslation(code, path) ? path + suffix', "hasTranslation(code, path) && path !== '/linux/' ? path + suffix")
     # TryPage and TryLinuxPage are the exact components proposed upstream,
-    # with link destinations, Mac downloads and Linux app wording adapted above.
+    # with only link destinations adapted above.
     run('npm', 'run', 'build', cwd=work)
     built = work / 'dist/client'
     # Keep these checks close to the exporter: missing WASM was the easiest
@@ -158,7 +104,8 @@ import { TryLinuxPage } from '@/astro/pages/TryLinuxPage'
         if dest.exists():
             shutil.rmtree(dest)
         shutil.copytree(built / directory, dest)
-    for filename in ['index.html', 'linux/index.html', 'brand/omarchy-logo.svg', 'brand/omarchy-wordmark.svg', 'data/search-index.json', 'data/explorer.json']:
+    for filename in ['index.html', 'linux/index.html', 'assets/images/favicon.png', 'brand/omarchy-logo.svg', 'brand/omarchy-wordmark.svg',
+                     'brand/oma-logo-mask.svg', 'brand/not-found-wordmark.svg', 'data/search-index.json', 'data/explorer.json']:
         dest = ROOT / filename
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(built / filename, dest)
