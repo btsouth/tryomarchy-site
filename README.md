@@ -22,8 +22,6 @@ Linux is part of the upstream proposal. Its `TryPage` covers Mac, Windows and Li
 
 The shared components and styles come directly from that source. Omarchy navigation and language links lead to the official site. Local download links stay on this page. The official site's analytics integration is omitted; Cloudflare injects its existing Web Analytics script independently.
 
-The exporter updates the Linux FAQ, requirement badges and launcher button names to match the published app release.
-
 ## Mac downloads
 
 Clicking the Mac download button looks up the latest release of
@@ -34,11 +32,9 @@ requests while the lookup runs. It prefers `TryOmarchy-<tag>.dmg` (for example,
 New numbered releases work without rebuilding the site. Before JavaScript
 loads, when opening the link in a new tab, or if the API fails, takes longer
 than eight seconds, or has no matching DMG, the button opens the latest
-release page instead. The resolver and button live in `scripts/try-mac.ts`
-and `scripts/try-mac-button.tsx`; the exporter copies them into the pinned
-source before building. The spinner respects reduced-motion preferences.
-
-Run its regression tests with `node --test scripts/try-mac.test.ts` (Node 24+).
+release page instead. The resolver and button are part of the upstream
+proposal (`src/lib/try-mac.ts` and `TryPage`), with tests in
+`src/lib/try-mac.test.ts`. The spinner respects reduced-motion preferences.
 
 ## Deployment
 
